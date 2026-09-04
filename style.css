@@ -1,0 +1,268 @@
+/* ==========================================================================
+   Apple iOS Liquid Glass (Жидкое стекло) & Montserrat Design System
+   ========================================================================== */
+
+:root {
+  --ios-font: 'Montserrat', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+  --glass-bg-primary: rgba(17, 24, 39, 0.55);
+  --glass-bg-card: rgba(255, 255, 255, 0.04);
+  --glass-bg-card-hover: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-bright: rgba(255, 255, 255, 0.24);
+  --glass-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
+  --ios-blue: #007aff;
+  --ios-blue-glow: rgba(0, 122, 255, 0.35);
+}
+
+body {
+  font-family: var(--ios-font);
+  background-color: #070a12;
+  overflow-x: hidden;
+  letter-spacing: -0.015em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --------------------------------------------------------------------------
+   Liquid Wallpaper Floating Animated Glowing Orbs
+   -------------------------------------------------------------------------- */
+.liquid-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.liquid-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.45;
+  will-change: transform;
+}
+
+.blob-1 {
+  width: 550px;
+  height: 550px;
+  top: -120px;
+  left: -80px;
+  background: radial-gradient(circle, #3b82f6 0%, #1d4ed8 60%, transparent 80%);
+  animation: floatOrb1 22s infinite alternate ease-in-out;
+}
+
+.blob-2 {
+  width: 600px;
+  height: 600px;
+  bottom: -150px;
+  right: -100px;
+  background: radial-gradient(circle, #7c3aed 0%, #4338ca 60%, transparent 80%);
+  animation: floatOrb2 26s infinite alternate ease-in-out;
+}
+
+.blob-3 {
+  width: 480px;
+  height: 480px;
+  top: 35%;
+  left: 45%;
+  background: radial-gradient(circle, #06b6d4 0%, #0284c7 60%, transparent 80%);
+  animation: floatOrb3 20s infinite alternate ease-in-out;
+  opacity: 0.3;
+}
+
+.blob-4 {
+  width: 420px;
+  height: 420px;
+  top: 60%;
+  left: 10%;
+  background: radial-gradient(circle, #ec4899 0%, #8b5cf6 60%, transparent 80%);
+  animation: floatOrb4 24s infinite alternate ease-in-out;
+  opacity: 0.25;
+}
+
+@keyframes floatOrb1 {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(120px, 80px) scale(1.12); }
+  100% { transform: translate(40px, 140px) scale(0.95); }
+}
+
+@keyframes floatOrb2 {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(-100px, -90px) scale(1.08); }
+  100% { transform: translate(-50px, -160px) scale(0.92); }
+}
+
+@keyframes floatOrb3 {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(-80px, 60px) scale(1.15); }
+  100% { transform: translate(70px, -70px) scale(0.9); }
+}
+
+@keyframes floatOrb4 {
+  0%   { transform: translate(0, 0) scale(0.9); }
+  50%  { transform: translate(90px, -60px) scale(1.1); }
+  100% { transform: translate(20px, -110px) scale(1.05); }
+}
+
+/* --------------------------------------------------------------------------
+   Apple Liquid Glassmorphism Core Classes
+   -------------------------------------------------------------------------- */
+.ios-glass {
+  background: var(--glass-bg-primary);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.4), var(--glass-specular);
+}
+
+.ios-glass-card {
+  background: var(--glass-bg-card);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25), var(--glass-specular);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ios-glass-card:hover {
+  background: var(--glass-bg-card-hover);
+  border-color: var(--glass-border-bright);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.ios-glass-pill {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  transition: all 0.2s ease;
+}
+
+.ios-glass-pill:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: scale(1.02);
+}
+
+/* --------------------------------------------------------------------------
+   iOS Inputs & Buttons
+   -------------------------------------------------------------------------- */
+.ios-input {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transition: all 0.25s ease;
+}
+
+.ios-input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(0, 122, 255, 0.8);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.ios-btn-primary {
+  background: linear-gradient(135deg, #007aff 0%, #0059c6 100%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ios-btn-primary:hover {
+  background: linear-gradient(135deg, #1a8bff 0%, #0066e3 100%);
+  box-shadow: 0 10px 28px rgba(0, 122, 255, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.ios-btn-primary:active {
+  transform: scale(0.97);
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   Chat Bubbles (iOS iMessage Frosted Glass Aesthetics)
+   -------------------------------------------------------------------------- */
+.message-bubble {
+  animation: fadeInBubble 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInBubble {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.bubble-user {
+  background: linear-gradient(145deg, #007aff 0%, #005ce6 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+  border-radius: 20px 20px 4px 20px;
+}
+
+.bubble-spark {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  border-radius: 20px 20px 20px 4px;
+}
+
+/* --------------------------------------------------------------------------
+   Tension Pulsing & Vignette
+   -------------------------------------------------------------------------- */
+@keyframes dangerPulse {
+  0%, 100% {
+    box-shadow: inset 0 0 40px rgba(239, 68, 68, 0.35), 0 0 25px rgba(239, 68, 68, 0.3);
+    border-color: rgba(239, 68, 68, 0.7);
+  }
+  50% {
+    box-shadow: inset 0 0 80px rgba(239, 68, 68, 0.7), 0 0 45px rgba(239, 68, 68, 0.55);
+    border-color: rgba(239, 68, 68, 1);
+  }
+}
+
+.tension-danger-pulse {
+  animation: dangerPulse 1.5s infinite ease-in-out;
+}
+
+.avatar-stressed {
+  animation: avatarShake 0.4s ease-in-out infinite alternate;
+}
+
+@keyframes avatarShake {
+  0% { transform: rotate(-2deg) scale(1.02); }
+  100% { transform: rotate(2deg) scale(1.02); }
+}
+
+/* Persona active selection border */
+.persona-card.active {
+  border-color: rgba(0, 122, 255, 0.9) !important;
+  background: rgba(0, 122, 255, 0.1) !important;
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.4), 0 12px 32px rgba(0, 122, 255, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+}
+
+/* iOS Glass Scrollbars */
+#chatMessages::-webkit-scrollbar {
+  width: 6px;
+}
+#chatMessages::-webkit-scrollbar-track {
+  background: transparent;
+}
+#chatMessages::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+}
+#chatMessages::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
