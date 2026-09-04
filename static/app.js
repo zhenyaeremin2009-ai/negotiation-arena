@@ -1,4 +1,4 @@
-// Frontend logic for Negotiation Arena: Spark AI
+// Frontend logic for Negotiation Arena: Spark AI (Universal Dual-Mode: Full-Stack & GitHub Pages)
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize Lucide icons
@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentSession = null;
   let selectedPersona = 'shark';
   let hasApiKey = false;
+  let isStaticMode = false;
+  let clientApiKey = localStorage.getItem('gemini_api_key') || '';
 
   const PERSONA_CONFIG = {
     shark: {
@@ -54,12 +56,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const WELCOME_STARTERS = {
+    "shark_price_war": "Добрый день. Сразу к делу: у меня ровно 15 минут до встречи с советом директоров. Наше коммерческое предложение у вас на столе: 12 миллионов рублей, предоплата 100%. Вы либо подписываете, либо мы передаем квоту вашим конкурентам. Что скажете?",
+    "partner_price_war": "Здравствуйте! Рад нашей встрече. Мы внимательно изучили потребности вашей компании в обновлении инфраструктуры. Наша базовая планка — 12 миллионов, но мы хотим выстроить долгосрочные партнерские отношения. С чего вам было бы комфортно начать обсуждение?",
+    "trickster_price_war": "Приветствую! Выглядите очень уверенно, коллеги о вас много рассказывали. Правда, на рынке сейчас ходят слухи, что бюджеты в вашей отрасли сильно урезают... Но мы же с вами разумные люди, правда? Базовый пакет на 12 миллионов — отличная инвестиция, согласны?",
+
+    "shark_contract_renewal": "Приветствую. Продление контракта на следующий год — плюс 30% к ставке в связи с инфляцией и ростом мощностей. Это окончательное решение руководства. Принимаете условия или с первого числа отключаем сервис?",
+    "partner_contract_renewal": "Добрый день! Прошел целый год успешного сотрудничества. Из-за расширения функционала и инфраструктуры мы вынуждены пересмотреть тарифы (+30%), но я здесь, чтобы помочь вам оптимизировать эту статью расходов. Давайте посмотрим, какие опции вам действительно нужны?",
+    "trickster_contract_renewal": "Здравствуйте! Кстати, поздравляю с отличным кварталом. Мы уже автоматически подготовили пролонгацию с небольшой корректировкой на 30% — сущие копейки для вашего масштаба. Подмахнем формальности сегодня, чтобы не отвлекаться от важных дел?",
+
+    "shark_deadline_crunch": "Так, слушайте сюда. Ваши правки в ТЗ сломали весь спринт. Релиз задерживается минимум на месяц, либо вы прямо сейчас согласовываете доплату 3 миллиона за круглосуточную работу команды. Других вариантов нет.",
+    "partner_deadline_crunch": "Привет! У нас возникло серьезное узкое место: объем дополнительных требований ставит под угрозу дату релиза. Я предлагаю сесть вместе и решить: либо мы урезаем скоуп до MVP и успеваем вовремя, либо ищем ресурсы на усиление команды. Что для бизнеса в приоритете?",
+    "trickster_deadline_crunch": "Добрый день... Ох, ну вы же сами понимаете ситуацию на проекте. Мы, конечно, из кожи вон лезем, но ваши аналитики так долго согласовывали макеты, что уложиться в срок теперь практически подвиг. Либо мы сдвигаем дедлайн, либо потребуется дополнительное финансирование. Как поступим?"
+  };
+
   const STAGES = {
     1: '1: Установление контакта',
     2: '2: Обсуждение потребностей',
     3: '3: Торг / Аргументация',
     4: '4: Завершение сделки'
   };
+
+  const SYSTEM_PROMPT = `Ты — ИИ-оппонент в деловой игре «Арена переговоров» (Хакатон «Лидеры цифровой трансформации 2026»). Твоё имя — Spark.
+Глобальная цель: Имитировать живого, сложного переговорщика, адаптироваться к стилю пользователя и обучать его через реалистичный диалог и качественную обратную связь.
+Стили поведения:
+- shark: Жёсткий, перебивает, давит авторитетом, ультиматумы.
+- partner: Кооперативный, техника «Да, и...», ищет Win-Win, задает открытые вопросы.
+- trickster: Манипулятор, искажает факты, сеет сомнения.
+Параметры internal_state:
+- trust_delta (-30..30)
+- tension_delta (-30..30)
+- progress_delta (-20..30)
+- stage_change (bool)
+- new_stage (1..4 or null)
+branch_trigger:
+- activated (bool)
+- ending_type ("deal"|"compromise"|"fail"|null)
+- reason (string|null)
+hint: Опциональная наводящая развивающая подсказка.
+Верни ТОЛЬКО валидный JSON со структурой:
+{"reply": "...", "internal_state": {"trust_delta": 0, "tension_delta": 0, "progress_delta": 0, "stage_change": false, "new_stage": null}, "branch_trigger": {"activated": false, "ending_type": null, "reason": null}, "hint": null}`;
 
   // DOM Elements
   const lobbyScreen = document.getElementById('lobbyScreen');
@@ -123,11 +159,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateAiEngineBadge(engine) {
     if (!aiEngineBadge) return;
     if (engine && engine.includes('gemini')) {
-      aiEngineBadge.className = 'flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-emerald-950/60 border border-emerald-500/40 text-[11px] text-emerald-300';
+      aiEngineBadge.className = 'flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/50 border border-emerald-500/40 text-[11px] text-emerald-300 shadow-sm backdrop-blur-md';
       aiEngineDot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
-      aiEngineText.textContent = `${engine} (Online)`;
+      aiEngineText.textContent = `${engine}`;
     } else {
-      aiEngineBadge.className = 'flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-amber-950/60 border border-amber-500/40 text-[11px] text-amber-300';
+      aiEngineBadge.className = 'flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-amber-950/50 border border-amber-500/40 text-[11px] text-amber-300 shadow-sm backdrop-blur-md';
       aiEngineDot.className = 'w-2 h-2 rounded-full bg-amber-400';
       aiEngineText.textContent = 'Demo Mode (Mock)';
     }
@@ -135,7 +171,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Check health & API Key on load
   fetch('/api/health')
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error('Not local backend');
+      return res.json();
+    })
     .then(data => {
       hasApiKey = data.has_api_key;
       if (hasApiKey) {
@@ -152,7 +191,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     })
-    .catch(() => {});
+    .catch(() => {
+      // Running on GitHub Pages or static web
+      isStaticMode = true;
+      if (clientApiKey) {
+        hasApiKey = true;
+        inputApiKey.value = clientApiKey;
+        updateAiEngineBadge('gemini-3.6-flash');
+        if (apiKeyStatusMsg) {
+          apiKeyStatusMsg.textContent = 'Ключ Gemini API сохранен в вашем браузере';
+          apiKeyStatusMsg.className = 'text-xs text-emerald-400 mb-4 block';
+        }
+      } else {
+        updateAiEngineBadge('mock');
+        if (apiKeyStatusMsg) {
+          apiKeyStatusMsg.textContent = 'Введите ваш ключ Gemini API в настройках для активации ИИ-модели';
+          apiKeyStatusMsg.className = 'text-xs text-amber-400 mb-4 block';
+        }
+      }
+    });
 
   // Persona Selection Cards
   document.querySelectorAll('.persona-card').forEach(card => {
@@ -189,31 +246,29 @@ document.addEventListener('DOMContentLoaded', () => {
     btnSaveKey.disabled = true;
     btnSaveKey.textContent = 'Сохраняем...';
 
-    try {
-      const res = await fetch('/api/config/key', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ api_key: key })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        hasApiKey = true;
-        apiKeyStatusMsg.textContent = 'Ключ успешно сохранен в системе!';
-        apiKeyStatusMsg.className = 'text-xs text-emerald-400 mb-4 block';
-        setTimeout(() => {
-          settingsModal.classList.add('hidden');
-        }, 1200);
-      } else {
-        apiKeyStatusMsg.textContent = data.detail || 'Ошибка сохранения';
-        apiKeyStatusMsg.className = 'text-xs text-red-400 mb-4 block';
-      }
-    } catch (err) {
-      apiKeyStatusMsg.textContent = 'Ошибка соединения с сервером';
-      apiKeyStatusMsg.className = 'text-xs text-red-400 mb-4 block';
-    } finally {
-      btnSaveKey.disabled = false;
-      btnSaveKey.textContent = 'Сохранить ключ';
+    // Store in browser
+    localStorage.setItem('gemini_api_key', key);
+    clientApiKey = key;
+    hasApiKey = true;
+    updateAiEngineBadge('gemini-3.6-flash');
+
+    if (!isStaticMode) {
+      try {
+        await fetch('/api/config/key', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ api_key: key })
+        });
+      } catch (e) {}
     }
+
+    apiKeyStatusMsg.textContent = 'Ключ успешно сохранен!';
+    apiKeyStatusMsg.className = 'text-xs text-emerald-400 mb-4 block';
+    btnSaveKey.disabled = false;
+    btnSaveKey.textContent = 'Сохранить ключ';
+    setTimeout(() => {
+      settingsModal.classList.add('hidden');
+    }, 1200);
   });
 
   // Quick Tactic Chips
@@ -227,7 +282,31 @@ document.addEventListener('DOMContentLoaded', () => {
   // Start Negotiation Game
   btnStartGame.addEventListener('click', async () => {
     btnStartGame.disabled = true;
-    btnStartGame.innerHTML = `<span class="animate-spin mr-2">⏳</span> Инициализация Spark...`;
+    btnStartGame.innerHTML = `<span class="animate-spin mr-2">⏳</span> Входим на арену...`;
+
+    if (isStaticMode) {
+      const starterKey = `${selectedPersona}_${selectScenario.value}`;
+      const welcomeText = WELCOME_STARTERS[starterKey] || "Здравствуйте. Я готов к переговорам. Каково ваше предложение?";
+      currentSession = {
+        session_id: 'web-' + Date.now(),
+        persona_type: selectedPersona,
+        scenario_id: selectScenario.value,
+        user_batna: inputBatna.value.trim(),
+        stage: 1,
+        metrics: {
+          trust: selectedPersona === 'trickster' ? -10 : 0,
+          tension: selectedPersona === 'shark' ? 10 : 0,
+          progress: 0
+        },
+        history: [{ sender: 'spark', text: welcomeText, timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }],
+        game_over: false
+      };
+      launchArena();
+      btnStartGame.disabled = false;
+      btnStartGame.innerHTML = `<i data-lucide="play" class="w-5 h-5 fill-current"></i><span>Войти на Арену переговоров</span>`;
+      lucide.createIcons();
+      return;
+    }
 
     try {
       const payload = {
@@ -293,9 +372,9 @@ document.addEventListener('DOMContentLoaded', () => {
     stageLabel.textContent = STAGES[stage] || `Этап ${stage}`;
     stepBars.forEach((bar, idx) => {
       if (idx + 1 <= stage) {
-        bar.className = 'h-2 rounded-full bg-blue-500 transition-colors shadow-sm shadow-blue-500/50';
+        bar.className = 'h-2 rounded-full bg-blue-500 shadow-sm shadow-blue-500/50 transition-colors';
       } else {
-        bar.className = 'h-2 rounded-full bg-slate-700 transition-colors';
+        bar.className = 'h-2 rounded-full bg-white/10 transition-colors';
       }
     });
 
@@ -331,7 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
       avatarContainer.classList.add('avatar-stressed', 'border-red-500');
       avatarEmoji.textContent = pCfg.emojis.angry;
       moodBadge.textContent = 'На пределе!';
-      moodBadge.className = 'absolute bottom-1.5 right-1.5 px-1.5 py-0.5 rounded bg-red-950 text-[10px] font-bold text-red-300 border border-red-700 animate-pulse';
+      moodBadge.className = 'absolute bottom-2 right-2 px-2 py-0.5 rounded-lg bg-red-950/80 backdrop-blur text-[10px] font-bold text-red-300 border border-red-700 animate-pulse';
     } else {
       tensionWidget.classList.remove('tension-danger-pulse', 'border-red-500');
       tensionBar.className = 'h-full bg-amber-500 transition-all duration-500';
@@ -343,11 +422,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (metrics.trust > 30 && metrics.progress > 40) {
         avatarEmoji.textContent = pCfg.emojis.pleased;
         moodBadge.textContent = 'Лоялен';
-        moodBadge.className = 'absolute bottom-1.5 right-1.5 px-1.5 py-0.5 rounded bg-emerald-950 text-[10px] font-semibold text-emerald-300 border border-emerald-700';
+        moodBadge.className = 'absolute bottom-2 right-2 px-2 py-0.5 rounded-lg bg-emerald-950/80 backdrop-blur text-[10px] font-bold text-emerald-300 border border-emerald-700';
       } else {
         avatarEmoji.textContent = pCfg.emojis.normal;
         moodBadge.textContent = 'Сдержан';
-        moodBadge.className = 'absolute bottom-1.5 right-1.5 px-1.5 py-0.5 rounded bg-slate-900 text-[10px] font-semibold text-slate-300 border border-slate-700';
+        moodBadge.className = 'absolute bottom-2 right-2 px-2 py-0.5 rounded-lg bg-black/60 backdrop-blur text-[10px] font-bold text-slate-300 border border-white/10';
       }
     }
 
@@ -430,6 +509,16 @@ document.addEventListener('DOMContentLoaded', () => {
     typingIndicator.classList.add('flex');
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
+    // If Static Mode (GitHub Pages)
+    if (isStaticMode) {
+      await handleStaticModeChat(text);
+      typingIndicator.classList.add('hidden');
+      typingIndicator.classList.remove('flex');
+      btnSend.disabled = false;
+      userInput.focus();
+      return;
+    }
+
     try {
       const res = await fetch('/api/chat', {
         method: 'POST',
@@ -448,27 +537,23 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
       currentSession = data.session;
 
-      // Update AI Engine badge if returned
       if (data.engine) {
         updateAiEngineBadge(data.engine);
       }
 
-      // Render Spark reply
       if (data.spark_reply) {
         appendChatMessage('spark', data.spark_reply, null, data.hint, data.engine);
       }
 
-      // Update indicators
       updateMetricsAndUI(currentSession.metrics, currentSession.stage);
 
-      // Check if negotiation reached an ending
       if (data.game_over) {
         setTimeout(() => {
           showGameOverBanner(data.ending, data.ending_reason);
         }, 1200);
       }
     } catch (err) {
-      appendChatMessage('spark', `⚠️ Произошла ошибка связи: ${err.message}. Проверьте настройки API ключа.`);
+      appendChatMessage('spark', `⚠️ Произошла ошибка: ${err.message}. Проверьте настройки API ключа.`);
     } finally {
       typingIndicator.classList.add('hidden');
       typingIndicator.classList.remove('flex');
@@ -477,35 +562,142 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Client-Side Direct Gemini Engine for GitHub Pages
+  async function handleStaticModeChat(text) {
+    const activeKey = clientApiKey || localStorage.getItem('gemini_api_key');
+    if (!activeKey) {
+      // Offline heuristic
+      simulateMockReply(text);
+      return;
+    }
+
+    try {
+      const recentHistory = currentSession.history.slice(-6).map(m => `${m.sender === 'user' ? 'User' : 'Spark'}: ${m.text}`);
+      const payload = {
+        user_message: text,
+        history: recentHistory,
+        persona_type: currentSession.persona_type,
+        stage: currentSession.stage,
+        user_batna: currentSession.user_batna,
+        metrics: currentSession.metrics
+      };
+
+      const prompt = `${SYSTEM_PROMPT}\n\nКонтекст:\n${JSON.stringify(payload, null, 2)}`;
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${activeKey}`;
+
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { response_mime_type: "application/json", temperature: 0.7 }
+        })
+      });
+
+      if (!res.ok) {
+        throw new Error(`API Error: ${res.status}`);
+      }
+
+      const raw = await res.json();
+      const textOutput = raw.candidates?.[0]?.content?.parts?.[0]?.text;
+      const parsed = JSON.parse(textOutput);
+
+      applyClientDelta(parsed.internal_state, parsed.branch_trigger);
+      currentSession.history.push({ sender: 'spark', text: parsed.reply, hint: parsed.hint });
+      appendChatMessage('spark', parsed.reply, null, parsed.hint, 'gemini-3.6-flash');
+      updateMetricsAndUI(currentSession.metrics, currentSession.stage);
+
+      if (currentSession.game_over) {
+        setTimeout(() => {
+          showGameOverBanner(currentSession.ending, currentSession.ending_reason);
+        }, 1200);
+      }
+    } catch (err) {
+      console.warn('Client Gemini call failed, falling back to heuristic:', err);
+      simulateMockReply(text);
+    }
+  }
+
+  function applyClientDelta(delta, branch) {
+    currentSession.metrics.trust = Math.max(-100, Math.min(100, currentSession.metrics.trust + (delta.trust_delta || 0)));
+    currentSession.metrics.tension = Math.max(-100, Math.min(100, currentSession.metrics.tension + (delta.tension_delta || 0)));
+    currentSession.metrics.progress = Math.max(0, Math.min(100, currentSession.metrics.progress + (delta.progress_delta || 0)));
+
+    if (delta.stage_change && delta.new_stage) {
+      currentSession.stage = Math.max(1, Math.min(4, delta.new_stage));
+    }
+
+    if (branch && branch.activated) {
+      currentSession.game_over = true;
+      currentSession.ending = branch.ending_type || 'compromise';
+      currentSession.ending_reason = branch.reason || 'Переговоры завершены.';
+    } else if (currentSession.metrics.tension >= 85) {
+      currentSession.game_over = true;
+      currentSession.ending = 'fail';
+      currentSession.ending_reason = 'Уровень напряжения превысил критический порог (85+). Оппонент хлопнул дверью.';
+    } else if (currentSession.metrics.progress >= 95) {
+      currentSession.game_over = true;
+      currentSession.ending = 'deal';
+      currentSession.ending_reason = 'Сделка успешно согласована на взаимовыгодных условиях!';
+    }
+  }
+
+  function simulateMockReply(userText) {
+    const persona = currentSession.persona_type;
+    let reply = "Я услышал вашу позицию. Давайте конкретизируем условия.";
+    let trustDelta = 0;
+    let tensionDelta = 5;
+    let progressDelta = 5;
+    let hint = null;
+
+    if (persona === 'shark') {
+      reply = "Вы серьезно предлагаете такие условия? Это неприемлемо. Мы либо фиксируем начальную планку, либо заканчиваем.";
+      tensionDelta = 15;
+      trustDelta = -5;
+      hint = "С Акулой важно говорить на языке цифр и взаимной выгоды (LTV, предоплата).";
+    } else if (persona === 'partner') {
+      reply = "Интересный аргумент. А что если мы пойдем навстречу по графику платежей, но закрепим долгосрочный контракт?";
+      trustDelta = 10;
+      tensionDelta = -5;
+      progressDelta = 10;
+      hint = "Партнер готов к встречным уступкам. Закрепите компромисс.";
+    }
+
+    applyClientDelta({ trust_delta: trustDelta, tension_delta: tensionDelta, progress_delta: progressDelta }, { activated: false });
+    currentSession.history.push({ sender: 'spark', text: reply, hint: hint });
+    appendChatMessage('spark', reply, null, hint, 'mock');
+    updateMetricsAndUI(currentSession.metrics, currentSession.stage);
+  }
+
   // Game Over handling
   function showGameOverBanner(ending, reason) {
     const banner = document.createElement('div');
-    banner.className = 'my-4 p-4 rounded-2xl border text-center transition-all message-bubble ';
+    banner.className = 'my-4 p-5 rounded-3xl border text-center transition-all message-bubble backdrop-blur-xl shadow-xl ';
 
     if (ending === 'deal') {
-      banner.className += 'bg-emerald-950/40 border-emerald-500/60 text-emerald-200';
+      banner.className += 'bg-emerald-950/50 border-emerald-500/50 text-emerald-200';
       banner.innerHTML = `
         <div class="font-bold text-base mb-1">🎉 Переговоры успешно завершены: СДЕЛКА!</div>
-        <div class="text-xs mb-3 text-slate-300">${reason || 'Условия согласованы'}</div>
-        <button id="btnOpenDebrief" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition shadow">
+        <div class="text-xs mb-3 text-slate-200 font-medium">${reason || 'Условия согласованы'}</div>
+        <button id="btnOpenDebrief" class="px-6 py-2.5 ios-btn-primary text-white text-xs font-bold rounded-xl shadow-lg">
           Посмотреть детальный разбор (Debrief)
         </button>
       `;
     } else if (ending === 'fail') {
-      banner.className += 'bg-red-950/40 border-red-500/60 text-red-200';
+      banner.className += 'bg-red-950/50 border-red-500/50 text-red-200';
       banner.innerHTML = `
         <div class="font-bold text-base mb-1">🛑 Переговоры сорваны: ПРОВАЛ!</div>
-        <div class="text-xs mb-3 text-slate-300">${reason || 'Оппонент вышел из диалога'}</div>
-        <button id="btnOpenDebrief" class="px-5 py-2 bg-red-600 hover:bg-red-500 text-white text-xs font-bold rounded-xl transition shadow">
+        <div class="text-xs mb-3 text-slate-200 font-medium">${reason || 'Оппонент вышел из диалога'}</div>
+        <button id="btnOpenDebrief" class="px-6 py-2.5 bg-red-600 hover:bg-red-500 text-white text-xs font-bold rounded-xl shadow-lg transition">
           Посмотреть детальный разбор (Debrief)
         </button>
       `;
     } else {
-      banner.className += 'bg-amber-950/40 border-amber-500/60 text-amber-200';
+      banner.className += 'bg-amber-950/50 border-amber-500/50 text-amber-200';
       banner.innerHTML = `
         <div class="font-bold text-base mb-1">⚖️ Переговоры завершены: КОМПРОМИСС</div>
-        <div class="text-xs mb-3 text-slate-300">${reason || 'Стороны пошли на взаимные уступки'}</div>
-        <button id="btnOpenDebrief" class="px-5 py-2 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold rounded-xl transition shadow">
+        <div class="text-xs mb-3 text-slate-200 font-medium">${reason || 'Стороны пошли на взаимные уступки'}</div>
+        <button id="btnOpenDebrief" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold rounded-xl shadow-lg transition">
           Посмотреть детальный разбор (Debrief)
         </button>
       `;
@@ -531,6 +723,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnForceDebrief.disabled = true;
     btnForceDebrief.innerHTML = `<span class="animate-spin mr-1">⏳</span> Анализируем...`;
+
+    if (isStaticMode) {
+      const mockDebrief = {
+        score: Math.max(25, Math.min(95, 50 + Math.round(currentSession.metrics.trust * 0.25) - Math.round(currentSession.metrics.tension * 0.2) + Math.round(currentSession.metrics.progress * 0.25))),
+        summary: `Раунд завершен с исходом: ${currentSession.ending || 'Компромисс'}. Вы вели переговоры с персоной ${currentSession.persona_type}.`,
+        harvard_analysis: "Вы отстаивали деловые условия и проверяли гибкость контрагента. В критические моменты наблюдалась позиционная борьба вместо поиска скрытых интересов.",
+        spin_analysis: "Были применены ситуационные вопросы. Рекомендуется активнее использовать извлекающие вопросы для усиления ценности вашего предложения.",
+        batna_analysis: `Альтернатива (${currentSession.user_batna}) позволила не соглашаться на заведомо невыгодные условия.`,
+        strengths: [
+          "Самообладание при психологическом прессинге",
+          "Готовность выдвигать контраргументы",
+          "Ориентация на сохранение контакта"
+        ],
+        weaknesses: [
+          "Недостаточное зондирование мотивов контрагента",
+          "Мало встречных условий формата «Да, если...»"
+        ],
+        recommendations: [
+          "Разделяйте человека и проблему: выражайте уважение личности и аргументируйте цифрами",
+          "Используйте пакетные соглашения (цена в обмен на срок или объем)"
+        ]
+      };
+      renderDebriefModal(mockDebrief, currentSession.ending, currentSession.ending_reason);
+      btnForceDebrief.disabled = false;
+      btnForceDebrief.innerHTML = `<i data-lucide="flag" class="w-3.5 h-3.5"></i><span>Завершить и разобрать</span>`;
+      lucide.createIcons();
+      return;
+    }
 
     try {
       const res = await fetch('/api/session/debrief', {
