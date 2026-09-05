@@ -103,10 +103,10 @@ class SessionManager:
             return session
 
         # Auto ending condition: Extreme tension
-        if session.metrics.tension >= 85:
+        if session.metrics.tension >= 95:
             session.game_over = True
             session.ending = "fail"
-            session.ending_reason = "Переговоры сорваны! Уровень напряжения превысил критический порог (85+). Оппонент хлопнул дверью."
+            session.ending_reason = "Переговоры сорваны! Уровень напряжения превысил критический порог (95+). Оппонент хлопнул дверью."
             return session
 
         # Auto ending condition: Full deal agreed

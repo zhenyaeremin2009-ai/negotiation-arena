@@ -366,3 +366,29 @@ body {
 #chatMessages::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.32);
 }
+
+/* --------------------------------------------------------------------------
+   Mobile Adaptations & Touch Ergonomics
+   -------------------------------------------------------------------------- */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media (max-width: 640px) {
+  .ios-input {
+    font-size: 16px !important; /* Prevents auto-zoom in iOS Safari */
+  }
+
+  .bubble-user, .bubble-spark {
+    max-width: 90% !important;
+  }
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+

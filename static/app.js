@@ -14,11 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let isStaticMode = false;
   let clientApiKey = localStorage.getItem('gemini_api_key') || '';
 
-  // 45-second Turn Countdown Timer State
+  // 45-second Turn Countdown Timer State (Continuous pressure, no pauses)
   const TURN_DURATION = 45;
   let timerSecondsLeft = TURN_DURATION;
   let turnTimerInterval = null;
-  let isTimerPaused = false;
 
   const PERSONA_CONFIG = {
     shark: {
@@ -171,16 +170,18 @@ hint: Опциональная наводящая развивающая под�
   const arenaBatnaText = document.getElementById('arenaBatnaText');
   const coachHintText = document.getElementById('coachHintText');
 
-  // Dynamic Island Timer Elements
+  // Dynamic Island Timer Elements (Continuous 45s countdown)
   const dynamicIslandTimer = document.getElementById('dynamicIslandTimer');
   const timerProgressCircle = document.getElementById('timerProgressCircle');
   const timerSecondsDisplay = document.getElementById('timerSecondsDisplay');
   const timerStatusHint = document.getElementById('timerStatusHint');
   const timerPulseDot = document.getElementById('timerPulseDot');
   const timerPenaltyAlert = document.getElementById('timerPenaltyAlert');
-  const btnPauseTimer = document.getElementById('btnPauseTimer');
-  const btnPauseTimerIcon = document.getElementById('btnPauseTimerIcon');
-  const btnPauseTimerText = document.getElementById('btnPauseTimerText');
+  const gameOverInputNotice = document.getElementById('gameOverInputNotice');
+  const gameOverInputNoticeText = document.getElementById('gameOverInputNoticeText');
+  const btnInputOpenDebrief = document.getElementById('btnInputOpenDebrief');
+  const arenaStyleTagMobile = document.getElementById('arenaStyleTagMobile');
+  const arenaBatnaTextMobile = document.getElementById('arenaBatnaTextMobile');
 
   const chatMessages = document.getElementById('chatMessages');
   const typingIndicator = document.getElementById('typingIndicator');
@@ -318,19 +319,26 @@ hint: Опциональная наводящая развивающая под�
   });
 
   // ==========================================================================
-  // Dynamic 45-Second Response Timer Engine (iOS Dynamic Island Style)
+  // Dynamic 45-Second Response Timer Engine (iOS Dynamic Island Style - No Pauses)
   // ==========================================================================
   const TIMER_CIRCUMFERENCE = 2 * Math.PI * 13; // ~81.68px for r=13
 
   function startTurnTimer() {
     stopTurnTimer();
+    if (!currentSession || currentSession.game_over) {
+      updateTimerDisplay();
+      return;
+    }
+
     timerSecondsLeft = TURN_DURATION;
-    isTimerPaused = false;
-    updatePauseButtonUI();
     updateTimerDisplay();
 
     turnTimerInterval = setInterval(() => {
-      if (isTimerPaused) return;
+      if (!currentSession || currentSession.game_over) {
+        stopTurnTimer();
+        updateTimerDisplay();
+        return;
+      }
 
       timerSecondsLeft--;
       updateTimerDisplay();
@@ -351,6 +359,21 @@ hint: Опциональная наводящая развивающая под�
   function updateTimerDisplay() {
     if (!timerSecondsDisplay || !timerProgressCircle) return;
 
+    // If game has ended, show 'ФИНАЛ' state and stop warning styling
+    if (currentSession && currentSession.game_over) {
+      timerSecondsDisplay.textContent = 'ФИНАЛ';
+      timerSecondsDisplay.classList.add('text-xs');
+      timerProgressCircle.style.strokeDashoffset = 0;
+      timerProgressCircle.className = currentSession.ending === 'deal' 
+        ? 'text-emerald-400 transition-all duration-300' 
+        : (currentSession.ending === 'fail' ? 'text-red-500 transition-all duration-300' : 'text-amber-400 transition-all duration-300');
+      timerPulseDot.className = 'w-1.5 h-1.5 rounded-full bg-slate-500';
+      timerStatusHint.textContent = 'Переговоры завершены. Откройте разбор.';
+      timerPenaltyAlert.classList.add('hidden');
+      return;
+    }
+
+    timerSecondsDisplay.classList.remove('text-xs');
     // Numerical display
     const secStr = timerSecondsLeft < 10 ? '0' + Math.max(0, timerSecondsLeft) : Math.max(0, timerSecondsLeft);
     timerSecondsDisplay.textContent = `00:${secStr}`;
@@ -362,19 +385,19 @@ hint: Опциональная наводящая развивающая под�
 
     // Escalating urgency stages
     if (timerSecondsLeft > 20) {
-      dynamicIslandTimer.className = 'ios-dynamic-island mx-4 mt-3.5 mb-1 px-4 py-2.5 rounded-2xl flex items-center justify-between timer-calm z-20 transition-all duration-300';
+      dynamicIslandTimer.className = 'ios-dynamic-island mx-2 sm:mx-4 mt-2.5 sm:mt-3.5 mb-1 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center justify-between timer-calm z-20 transition-all duration-300';
       timerProgressCircle.className = 'text-blue-400 transition-all duration-300';
       timerPulseDot.className = 'w-1.5 h-1.5 rounded-full bg-blue-400 animate-ping';
       timerStatusHint.textContent = 'Ваш ход — оппонент ждёт ответа';
       timerPenaltyAlert.classList.add('hidden');
     } else if (timerSecondsLeft <= 20 && timerSecondsLeft > 10) {
-      dynamicIslandTimer.className = 'ios-dynamic-island mx-4 mt-3.5 mb-1 px-4 py-2.5 rounded-2xl flex items-center justify-between timer-warning z-20 transition-all duration-300';
+      dynamicIslandTimer.className = 'ios-dynamic-island mx-2 sm:mx-4 mt-2.5 sm:mt-3.5 mb-1 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center justify-between timer-warning z-20 transition-all duration-300';
       timerProgressCircle.className = 'text-amber-400 transition-all duration-300';
       timerPulseDot.className = 'w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping';
       timerStatusHint.textContent = 'Оппонент начинает проявлять нетерпение...';
       timerPenaltyAlert.classList.add('hidden');
     } else {
-      dynamicIslandTimer.className = 'ios-dynamic-island mx-4 mt-3.5 mb-1 px-4 py-2.5 rounded-2xl flex items-center justify-between timer-danger z-20 transition-all duration-300';
+      dynamicIslandTimer.className = 'ios-dynamic-island mx-2 sm:mx-4 mt-2.5 sm:mt-3.5 mb-1 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center justify-between timer-danger z-20 transition-all duration-300';
       timerProgressCircle.className = 'text-red-500 transition-all duration-300';
       timerPulseDot.className = 'w-1.5 h-1.5 rounded-full bg-red-500 animate-ping';
       timerStatusHint.textContent = 'Срочно! Пауза критически накаляет обстановку!';
@@ -382,31 +405,10 @@ hint: Опциональная наводящая развивающая под�
     }
   }
 
-  function updatePauseButtonUI() {
-    if (!btnPauseTimerIcon || !btnPauseTimerText) return;
-    if (isTimerPaused) {
-      btnPauseTimerIcon.setAttribute('data-lucide', 'play');
-      btnPauseTimerText.textContent = 'Пуск';
-      dynamicIslandTimer.classList.add('opacity-70');
-      timerStatusHint.textContent = 'Таймер на паузе (размышление)';
-    } else {
-      btnPauseTimerIcon.setAttribute('data-lucide', 'pause');
-      btnPauseTimerText.textContent = 'Пауза';
-      dynamicIslandTimer.classList.remove('opacity-70');
-    }
-    lucide.createIcons();
-  }
-
-  if (btnPauseTimer) {
-    btnPauseTimer.addEventListener('click', () => {
-      isTimerPaused = !isTimerPaused;
-      updatePauseButtonUI();
-    });
-  }
-
   // Handle Turn Timeout (45s expired)
   async function handleTurnTimeout() {
     stopTurnTimer();
+    if (!currentSession || currentSession.game_over) return;
 
     // Show system penalty notification in chat
     appendChatMessage('system', '⏱️ Время на ответ истекло (45 секунд). Затянувшаяся пауза расценена оппонентом как слабость позиции (+15 к напряжению).');
@@ -416,11 +418,11 @@ hint: Опциональная наводящая развивающая под�
     currentSession.metrics.trust = Math.max(-100, currentSession.metrics.trust - 8);
     updateMetricsAndUI(currentSession.metrics, currentSession.stage);
 
-    // If tension exploded
-    if (currentSession.metrics.tension >= 85) {
+    // If tension reaches blowout threshold (95+)
+    if (currentSession.metrics.tension >= 95) {
       currentSession.game_over = true;
       currentSession.ending = 'fail';
-      currentSession.ending_reason = 'Оппонент потерял терпение из-за молчания и вышел из переговоров.';
+      currentSession.ending_reason = 'Оппонент потерял всякое терпение из-за молчания и вышел из переговоров.';
       showGameOverBanner(currentSession.ending, currentSession.ending_reason);
       return;
     }
@@ -437,7 +439,11 @@ hint: Опциональная наводящая развивающая под�
         simulateMockReply(timeoutNotice);
         typingIndicator.classList.add('hidden');
         typingIndicator.classList.remove('flex');
-        if (!currentSession.game_over) startTurnTimer();
+        if (currentSession.game_over) {
+          showGameOverBanner(currentSession.ending, currentSession.ending_reason);
+        } else {
+          startTurnTimer();
+        }
       }, 900);
       return;
     }
@@ -464,20 +470,26 @@ hint: Опциональная наводящая развивающая под�
       updateMetricsAndUI(currentSession.metrics, currentSession.stage);
 
       if (data.game_over) {
+        stopTurnTimer();
         setTimeout(() => {
           showGameOverBanner(data.ending, data.ending_reason);
-        }, 1200);
+        }, 800);
       } else {
         startTurnTimer();
       }
     } catch (err) {
       simulateMockReply(timeoutNotice);
-      if (!currentSession.game_over) startTurnTimer();
+      if (currentSession.game_over) {
+        showGameOverBanner(currentSession.ending, currentSession.ending_reason);
+      } else {
+        startTurnTimer();
+      }
     } finally {
       typingIndicator.classList.add('hidden');
       typingIndicator.classList.remove('flex');
     }
   }
+
 
   // ==========================================================================
   // Dynamic Tension Avatars System (5 Emotional States in Vector SVG)
@@ -786,6 +798,18 @@ hint: Опциональная наводящая развивающая под�
     arenaStyleTag.textContent = pCfg.style;
     arenaBatnaText.textContent = currentSession.user_batna;
 
+    if (arenaStyleTagMobile) arenaStyleTagMobile.textContent = pCfg.style;
+    if (arenaBatnaTextMobile) arenaBatnaTextMobile.textContent = currentSession.user_batna ? currentSession.user_batna.slice(0, 26) + '...' : 'BATNA';
+
+    // Reset input controls
+    if (gameOverInputNotice) gameOverInputNotice.classList.add('hidden');
+    userInput.disabled = false;
+    userInput.value = '';
+    userInput.placeholder = 'Напишите ваш аргумент или встречное предложение...';
+    userInput.onclick = null;
+    btnSend.disabled = false;
+    btnSend.innerHTML = '<span class="text-xs sm:text-sm">Ответить</span><i data-lucide="send" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>';
+
     // Render initial history
     chatMessages.innerHTML = '';
     currentSession.history.forEach(msg => {
@@ -796,7 +820,7 @@ hint: Опциональная наводящая развивающая под�
     userInput.focus();
     lucide.createIcons();
 
-    // Start 45-second Turn Countdown Timer
+    // Start 45-second Turn Countdown Timer (Continuous pressure, no pauses)
     startTurnTimer();
   }
 
@@ -925,8 +949,16 @@ hint: Опциональная наводящая развивающая под�
   // Handle User Message Submission
   chatForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (!currentSession) return;
+
+    // If game has already concluded, submitting opens Debrief
+    if (currentSession.game_over) {
+      triggerDebrief();
+      return;
+    }
+
     const text = userInput.value.trim();
-    if (!text || !currentSession || currentSession.game_over) return;
+    if (!text) return;
 
     // User took action: stop turn countdown timer
     stopTurnTimer();
@@ -947,9 +979,13 @@ hint: Опциональная наводящая развивающая под�
       await handleStaticModeChat(text);
       typingIndicator.classList.add('hidden');
       typingIndicator.classList.remove('flex');
-      btnSend.disabled = false;
-      userInput.focus();
-      if (!currentSession.game_over) startTurnTimer();
+      if (currentSession.game_over) {
+        showGameOverBanner(currentSession.ending, currentSession.ending_reason);
+      } else {
+        btnSend.disabled = false;
+        userInput.focus();
+        startTurnTimer();
+      }
       return;
     }
 
@@ -985,19 +1021,26 @@ hint: Опциональная наводящая развивающая под�
         stopTurnTimer();
         setTimeout(() => {
           showGameOverBanner(data.ending, data.ending_reason);
-        }, 1200);
+        }, 800);
       } else {
+        btnSend.disabled = false;
+        userInput.focus();
         // Restart 45-second timer for player's next move
         startTurnTimer();
       }
     } catch (err) {
-      appendChatMessage('spark', `⚠️ Произошла ошибка: ${err.message}. Проверьте настройки API ключа.`);
-      if (!currentSession.game_over) startTurnTimer();
+      appendChatMessage('spark', `⚠️ Связь с бэкендом прервана (${err.message}). Продолжаем в автономном режиме.`);
+      simulateMockReply(text);
+      if (currentSession.game_over) {
+        showGameOverBanner(currentSession.ending, currentSession.ending_reason);
+      } else {
+        btnSend.disabled = false;
+        userInput.focus();
+        startTurnTimer();
+      }
     } finally {
       typingIndicator.classList.add('hidden');
       typingIndicator.classList.remove('flex');
-      btnSend.disabled = false;
-      userInput.focus();
     }
   });
 
@@ -1050,11 +1093,14 @@ hint: Опциональная наводящая развивающая под�
         stopTurnTimer();
         setTimeout(() => {
           showGameOverBanner(currentSession.ending, currentSession.ending_reason);
-        }, 1200);
+        }, 800);
       }
     } catch (err) {
       console.warn('Client Gemini call failed, falling back to heuristic:', err);
       simulateMockReply(text);
+      if (currentSession.game_over) {
+        showGameOverBanner(currentSession.ending, currentSession.ending_reason);
+      }
     }
   }
 
@@ -1071,10 +1117,10 @@ hint: Опциональная наводящая развивающая под�
       currentSession.game_over = true;
       currentSession.ending = branch.ending_type || 'compromise';
       currentSession.ending_reason = branch.reason || 'Переговоры завершены.';
-    } else if (currentSession.metrics.tension >= 85) {
+    } else if (currentSession.metrics.tension >= 95) {
       currentSession.game_over = true;
       currentSession.ending = 'fail';
-      currentSession.ending_reason = 'Уровень напряжения превысил критический порог (85+). Оппонент хлопнул дверью.';
+      currentSession.ending_reason = 'Уровень напряжения превысил критический порог (95+). Оппонент хлопнул дверью и разорвал переговоры.';
     } else if (currentSession.metrics.progress >= 95) {
       currentSession.game_over = true;
       currentSession.ending = 'deal';
@@ -1111,8 +1157,8 @@ hint: Опциональная наводящая развивающая под�
       }
     } else if (persona === 'shark') {
       reply = "Вы серьезно предлагаете такие условия? Это неприемлемо. Мы либо фиксируем начальную планку, либо заканчиваем.";
-      tensionDelta = 12;
-      trustDelta = -5;
+      tensionDelta = 10;
+      trustDelta = -4;
       hint = "С Акулой важно говорить на языке цифр и взаимной выгоды (LTV, предоплата).";
     } else if (persona === 'partner') {
       reply = "Интересный аргумент. А что если мы пойдем навстречу по графику платежей, но закрепим долгосрочный контракт?";
@@ -1131,40 +1177,49 @@ hint: Опциональная наводящая развивающая под�
     currentSession.history.push({ sender: 'spark', text: reply, hint: hint });
     appendChatMessage('spark', reply, null, hint, 'mock');
     updateMetricsAndUI(currentSession.metrics, currentSession.stage);
+
+    if (currentSession.game_over) {
+      showGameOverBanner(currentSession.ending, currentSession.ending_reason);
+    }
   }
 
   // Game Over handling
   function showGameOverBanner(ending, reason) {
     stopTurnTimer();
+    updateTimerDisplay();
+
+    // Avoid duplicate banner in chat
+    if (document.getElementById('gameOverChatBanner')) return;
 
     const banner = document.createElement('div');
-    banner.className = 'my-4 p-5 rounded-3xl border text-center transition-all message-bubble backdrop-blur-xl shadow-xl ';
+    banner.id = 'gameOverChatBanner';
+    banner.className = 'my-4 p-4 sm:p-5 rounded-2xl sm:rounded-3xl border text-center transition-all message-bubble backdrop-blur-xl shadow-xl ';
 
     if (ending === 'deal') {
       banner.className += 'bg-emerald-950/50 border-emerald-500/50 text-emerald-200';
       banner.innerHTML = `
-        <div class="font-bold text-base mb-1">🎉 Переговоры успешно завершены: СДЕЛКА!</div>
-        <div class="text-xs mb-3 text-slate-200 font-medium">${reason || 'Условия согласованы'}</div>
-        <button id="btnOpenDebrief" class="px-6 py-2.5 ios-btn-primary text-white text-xs font-bold rounded-xl shadow-lg">
-          Посмотреть детальный разбор (Debrief)
+        <div class="font-extrabold text-sm sm:text-base mb-1">🎉 Переговоры успешно завершены: СДЕЛКА!</div>
+        <div class="text-xs mb-3 text-slate-200 font-medium leading-relaxed">${reason || 'Условия согласованы'}</div>
+        <button id="btnOpenDebrief" class="px-5 sm:px-6 py-2 sm:py-2.5 ios-btn-primary text-white text-xs font-bold rounded-xl shadow-lg cursor-pointer">
+          Посмотреть детальный разбор (Debrief) &rarr;
         </button>
       `;
     } else if (ending === 'fail') {
       banner.className += 'bg-red-950/50 border-red-500/50 text-red-200';
       banner.innerHTML = `
-        <div class="font-bold text-base mb-1">🛑 Переговоры сорваны: ПРОВАЛ!</div>
-        <div class="text-xs mb-3 text-slate-200 font-medium">${reason || 'Оппонент вышел из диалога'}</div>
-        <button id="btnOpenDebrief" class="px-6 py-2.5 bg-red-600 hover:bg-red-500 text-white text-xs font-bold rounded-xl shadow-lg transition">
-          Посмотреть детальный разбор (Debrief)
+        <div class="font-extrabold text-sm sm:text-base mb-1">🛑 Переговоры сорваны: ПРОВАЛ!</div>
+        <div class="text-xs mb-3 text-slate-200 font-medium leading-relaxed">${reason || 'Оппонент вышел из диалога'}</div>
+        <button id="btnOpenDebrief" class="px-5 sm:px-6 py-2 sm:py-2.5 bg-red-600 hover:bg-red-500 text-white text-xs font-bold rounded-xl shadow-lg transition cursor-pointer">
+          Посмотреть детальный разбор (Debrief) &rarr;
         </button>
       `;
     } else {
       banner.className += 'bg-amber-950/50 border-amber-500/50 text-amber-200';
       banner.innerHTML = `
-        <div class="font-bold text-base mb-1">⚖️ Переговоры завершены: КОМПРОМИСС</div>
-        <div class="text-xs mb-3 text-slate-200 font-medium">${reason || 'Стороны пошли на взаимные уступки'}</div>
-        <button id="btnOpenDebrief" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold rounded-xl shadow-lg transition">
-          Посмотреть детальный разбор (Debrief)
+        <div class="font-extrabold text-sm sm:text-base mb-1">⚖️ Переговоры завершены: КОМПРОМИСС</div>
+        <div class="text-xs mb-3 text-slate-200 font-medium leading-relaxed">${reason || 'Стороны пошли на взаимные уступки'}</div>
+        <button id="btnOpenDebrief" class="px-5 sm:px-6 py-2 sm:py-2.5 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold rounded-xl shadow-lg transition cursor-pointer">
+          Посмотреть детальный разбор (Debrief) &rarr;
         </button>
       `;
     }
@@ -1172,7 +1227,31 @@ hint: Опциональная наводящая развивающая под�
     chatMessages.appendChild(banner);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    document.getElementById('btnOpenDebrief').addEventListener('click', triggerDebrief);
+    const btnOpenDebrief = document.getElementById('btnOpenDebrief');
+    if (btnOpenDebrief) {
+      btnOpenDebrief.addEventListener('click', triggerDebrief);
+    }
+
+    // Show sticky input notice bar
+    if (gameOverInputNotice) {
+      gameOverInputNotice.classList.remove('hidden');
+      if (gameOverInputNoticeText) {
+        gameOverInputNoticeText.textContent = ending === 'deal'
+          ? '🎉 Сделка согласована!'
+          : (ending === 'fail' ? '🛑 Переговоры сорваны!' : '⚖️ Компромисс');
+      }
+    }
+
+    // Adapt chat input so it's impossible to get stuck
+    userInput.value = '';
+    userInput.placeholder = 'Переговоры завершены. Нажмите здесь для разбора...';
+    userInput.onclick = () => {
+      if (currentSession && currentSession.game_over) triggerDebrief();
+    };
+
+    btnSend.disabled = false;
+    btnSend.innerHTML = '<span class="text-xs sm:text-sm">Итоги</span><i data-lucide="award" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>';
+    lucide.createIcons();
   }
 
   // Force Debrief
@@ -1298,6 +1377,9 @@ hint: Опциональная наводящая развивающая под�
 
   // Play Again / Reset
   btnDebriefPlayAgain.addEventListener('click', resetToLobby);
+  if (btnInputOpenDebrief) {
+    btnInputOpenDebrief.addEventListener('click', triggerDebrief);
+  }
   btnRestart.addEventListener('click', () => {
     if (confirm('Вернуться в лобби и сбросить текущие переговоры?')) {
       resetToLobby();
@@ -1313,7 +1395,13 @@ hint: Опциональная наводящая развивающая под�
     headerPersonaBadge.classList.add('hidden');
     tensionVignette.classList.add('opacity-0');
     tensionVignette.classList.remove('opacity-100');
+    if (gameOverInputNotice) gameOverInputNotice.classList.add('hidden');
+    userInput.disabled = false;
+    userInput.onclick = null;
+    userInput.placeholder = 'Напишите ваш аргумент или встречное предложение...';
+    btnSend.innerHTML = '<span class="text-xs sm:text-sm">Ответить</span><i data-lucide="send" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>';
     currentSession = null;
+    lucide.createIcons();
   }
 
   function escapeHtml(str) {
