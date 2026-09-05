@@ -372,9 +372,9 @@ hint: Опциональная наводящая развивающая под�
     stageLabel.textContent = STAGES[stage] || `Этап ${stage}`;
     stepBars.forEach((bar, idx) => {
       if (idx + 1 <= stage) {
-        bar.className = 'h-2 rounded-full bg-blue-500 shadow-sm shadow-blue-500/50 transition-colors';
+        bar.className = 'h-2 rounded-full bg-[#a8c7fa] transition-colors';
       } else {
-        bar.className = 'h-2 rounded-full bg-white/10 transition-colors';
+        bar.className = 'h-2 rounded-full bg-[#33353a] transition-colors';
       }
     });
 
@@ -383,14 +383,14 @@ hint: Опциональная наводящая развивающая под�
     trustValue.textContent = (metrics.trust > 0 ? '+' : '') + metrics.trust;
     trustBar.style.width = `${trustPercent}%`;
     if (metrics.trust < -20) {
-      trustBar.className = 'h-full bg-red-500 transition-all duration-500';
-      trustValue.className = 'font-mono font-bold text-xs text-red-400';
+      trustBar.className = 'm3-progress-indicator bg-[#ffb4ab]';
+      trustValue.className = 'font-mono font-bold text-xs text-[#ffb4ab]';
     } else if (metrics.trust > 20) {
-      trustBar.className = 'h-full bg-emerald-500 transition-all duration-500';
-      trustValue.className = 'font-mono font-bold text-xs text-emerald-400';
+      trustBar.className = 'm3-progress-indicator bg-[#6dd58c]';
+      trustValue.className = 'font-mono font-bold text-xs text-[#6dd58c]';
     } else {
-      trustBar.className = 'h-full bg-slate-400 transition-all duration-500';
-      trustValue.className = 'font-mono font-bold text-xs text-slate-300';
+      trustBar.className = 'm3-progress-indicator bg-[#bfc6dc]';
+      trustValue.className = 'font-mono font-bold text-xs text-[#bfc6dc]';
     }
 
     // Tension (-100 to 100) -> Percentage 0 to 100%
@@ -402,31 +402,31 @@ hint: Опциональная наводящая развивающая под�
 
     // Tension danger cues
     if (metrics.tension > 50) {
-      tensionWidget.classList.add('tension-danger-pulse', 'border-red-500');
-      tensionBar.className = 'h-full bg-red-500 transition-all duration-500';
-      tensionValue.className = 'font-mono font-bold text-xs text-red-400 animate-pulse';
+      tensionWidget.classList.add('tension-danger-pulse', 'border-[#ffb4ab]');
+      tensionBar.className = 'm3-progress-indicator bg-[#ffb4ab]';
+      tensionValue.className = 'font-mono font-bold text-xs text-[#ffb4ab] animate-pulse';
       tensionVignette.classList.remove('opacity-0');
       tensionVignette.classList.add('opacity-100');
-      avatarContainer.classList.add('avatar-stressed', 'border-red-500');
+      avatarContainer.classList.add('avatar-stressed', 'border-[#ffb4ab]');
       avatarEmoji.textContent = pCfg.emojis.angry;
       moodBadge.textContent = 'На пределе!';
-      moodBadge.className = 'absolute bottom-2 right-2 px-2 py-0.5 rounded-lg bg-red-950/80 backdrop-blur text-[10px] font-bold text-red-300 border border-red-700 animate-pulse';
+      moodBadge.className = 'absolute bottom-1 right-1 px-1.5 py-0.5 rounded-md bg-[#93000a] text-[9px] font-bold text-[#ffdad6] border border-[#ffb4ab] animate-pulse';
     } else {
-      tensionWidget.classList.remove('tension-danger-pulse', 'border-red-500');
-      tensionBar.className = 'h-full bg-amber-500 transition-all duration-500';
-      tensionValue.className = 'font-mono font-bold text-xs text-amber-400';
+      tensionWidget.classList.remove('tension-danger-pulse', 'border-[#ffb4ab]');
+      tensionBar.className = 'm3-progress-indicator bg-[#ffb951]';
+      tensionValue.className = 'font-mono font-bold text-xs text-[#ffb951]';
       tensionVignette.classList.remove('opacity-100');
       tensionVignette.classList.add('opacity-0');
-      avatarContainer.classList.remove('avatar-stressed', 'border-red-500');
+      avatarContainer.classList.remove('avatar-stressed', 'border-[#ffb4ab]');
 
       if (metrics.trust > 30 && metrics.progress > 40) {
         avatarEmoji.textContent = pCfg.emojis.pleased;
         moodBadge.textContent = 'Лоялен';
-        moodBadge.className = 'absolute bottom-2 right-2 px-2 py-0.5 rounded-lg bg-emerald-950/80 backdrop-blur text-[10px] font-bold text-emerald-300 border border-emerald-700';
+        moodBadge.className = 'absolute bottom-1 right-1 px-1.5 py-0.5 rounded-md bg-[#005322] text-[9px] font-bold text-[#8cf3a6] border border-[#6dd58c]/40';
       } else {
         avatarEmoji.textContent = pCfg.emojis.normal;
         moodBadge.textContent = 'Сдержан';
-        moodBadge.className = 'absolute bottom-2 right-2 px-2 py-0.5 rounded-lg bg-black/60 backdrop-blur text-[10px] font-bold text-slate-300 border border-white/10';
+        moodBadge.className = 'absolute bottom-1 right-1 px-1.5 py-0.5 rounded-md bg-[#111318] text-[9px] font-bold text-[#c4c6d0] border border-[#44474f]';
       }
     }
 
@@ -447,12 +447,12 @@ hint: Опциональная наводящая развивающая под�
 
     if (isUser) {
       msgDiv.innerHTML = `
-        <div class="max-w-xl bubble-user text-white px-5 py-3.5 shadow-lg">
+        <div class="max-w-xl m3-bubble-user px-4 py-3 shadow-sm">
           <div class="flex items-center justify-between gap-4 mb-1">
-            <span class="text-[11px] font-bold text-blue-100">Вы</span>
-            <span class="text-[10px] text-blue-200/80 font-mono">${timeStr}</span>
+            <span class="text-[11px] font-bold text-[#a8c7fa]">Вы</span>
+            <span class="text-[10px] text-[#bfc6dc] font-mono">${timeStr}</span>
           </div>
-          <p class="text-sm leading-relaxed whitespace-pre-wrap font-normal">${escapeHtml(text)}</p>
+          <p class="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap font-normal">${escapeHtml(text)}</p>
         </div>
       `;
     } else if (isSpark) {
@@ -461,20 +461,20 @@ hint: Опциональная наводящая развивающая под�
       const isGemini = engineLabel.includes('gemini');
 
       msgDiv.innerHTML = `
-        <div class="max-w-xl bubble-spark text-slate-100 px-5 py-3.5 shadow-xl">
-          <div class="flex items-center justify-between gap-4 mb-1.5">
-            <span class="text-[11px] font-bold text-slate-200 flex items-center gap-1.5">
+        <div class="max-w-xl m3-bubble-spark px-4 py-3 shadow-sm">
+          <div class="flex items-center justify-between gap-4 mb-1">
+            <span class="text-[11px] font-bold text-[#e2e2e9] flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full shadow-sm" style="background-color: ${pCfg.color};"></span>
               ${pCfg.name}
             </span>
             <div class="flex items-center gap-2">
-              <span class="text-[9px] px-2 py-0.5 rounded-md font-mono font-semibold ${isGemini ? 'bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 shadow-sm' : 'bg-white/10 text-slate-300 border border-white/10'}">
+              <span class="text-[9px] px-2 py-0.5 rounded-full font-mono font-medium ${isGemini ? 'bg-[#005322] text-[#8cf3a6] border border-[#6dd58c]/40' : 'bg-[#191c20] text-[#c4c6d0] border border-[#44474f]'}">
                 ${engineLabel}
               </span>
-              <span class="text-[10px] text-slate-400 font-mono">${timeStr}</span>
+              <span class="text-[10px] text-[#8e9099] font-mono">${timeStr}</span>
             </div>
           </div>
-          <p class="text-sm leading-relaxed whitespace-pre-wrap text-slate-200 font-normal">${escapeHtml(text)}</p>
+          <p class="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap text-[#e2e2e9] font-normal">${escapeHtml(text)}</p>
         </div>
       `;
     }
@@ -672,32 +672,32 @@ hint: Опциональная наводящая развивающая под�
   // Game Over handling
   function showGameOverBanner(ending, reason) {
     const banner = document.createElement('div');
-    banner.className = 'my-4 p-5 rounded-3xl border text-center transition-all message-bubble backdrop-blur-xl shadow-xl ';
+    banner.className = 'my-4 p-5 rounded-3xl border text-center transition-all message-bubble shadow-md ';
 
     if (ending === 'deal') {
-      banner.className += 'bg-emerald-950/50 border-emerald-500/50 text-emerald-200';
+      banner.className += 'bg-[#005322]/30 border-[#6dd58c]/50 text-[#8cf3a6]';
       banner.innerHTML = `
         <div class="font-bold text-base mb-1">🎉 Переговоры успешно завершены: СДЕЛКА!</div>
-        <div class="text-xs mb-3 text-slate-200 font-medium">${reason || 'Условия согласованы'}</div>
-        <button id="btnOpenDebrief" class="px-6 py-2.5 ios-btn-primary text-white text-xs font-bold rounded-xl shadow-lg">
+        <div class="text-xs mb-3 text-[#c4c6d0] font-medium">${reason || 'Условия согласованы'}</div>
+        <button id="btnOpenDebrief" class="px-6 py-2.5 m3-btn-filled text-xs font-bold shadow">
           Посмотреть детальный разбор (Debrief)
         </button>
       `;
     } else if (ending === 'fail') {
-      banner.className += 'bg-red-950/50 border-red-500/50 text-red-200';
+      banner.className += 'bg-[#93000a]/30 border-[#ffb4ab]/50 text-[#ffdad6]';
       banner.innerHTML = `
         <div class="font-bold text-base mb-1">🛑 Переговоры сорваны: ПРОВАЛ!</div>
-        <div class="text-xs mb-3 text-slate-200 font-medium">${reason || 'Оппонент вышел из диалога'}</div>
-        <button id="btnOpenDebrief" class="px-6 py-2.5 bg-red-600 hover:bg-red-500 text-white text-xs font-bold rounded-xl shadow-lg transition">
+        <div class="text-xs mb-3 text-[#c4c6d0] font-medium">${reason || 'Оппонент вышел из диалога'}</div>
+        <button id="btnOpenDebrief" class="px-6 py-2.5 bg-[#93000a] text-[#ffdad6] hover:brightness-110 rounded-full text-xs font-bold shadow transition">
           Посмотреть детальный разбор (Debrief)
         </button>
       `;
     } else {
-      banner.className += 'bg-amber-950/50 border-amber-500/50 text-amber-200';
+      banner.className += 'bg-[#633f00]/30 border-[#ffb951]/50 text-[#ffddb3]';
       banner.innerHTML = `
         <div class="font-bold text-base mb-1">⚖️ Переговоры завершены: КОМПРОМИСС</div>
-        <div class="text-xs mb-3 text-slate-200 font-medium">${reason || 'Стороны пошли на взаимные уступки'}</div>
-        <button id="btnOpenDebrief" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold rounded-xl shadow-lg transition">
+        <div class="text-xs mb-3 text-[#c4c6d0] font-medium">${reason || 'Стороны пошли на взаимные уступки'}</div>
+        <button id="btnOpenDebrief" class="px-6 py-2.5 bg-[#633f00] text-[#ffddb3] hover:brightness-110 rounded-full text-xs font-bold shadow transition">
           Посмотреть детальный разбор (Debrief)
         </button>
       `;

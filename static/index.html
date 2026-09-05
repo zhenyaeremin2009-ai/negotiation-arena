@@ -2,18 +2,17 @@
 <html lang="ru" class="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Арена переговоров: Spark AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Арена переговоров: Spark AI (Material Design 3)</title>
 
-  <!-- Google Fonts: Montserrat -->
+  <!-- Google Fonts: Roboto & Material Symbols Outlined -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="style.css">
 
   <script>
@@ -22,171 +21,152 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Montserrat', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-            mono: ['JetBrains Mono', 'Menlo', 'monospace']
-          },
-          colors: {
-            ios: {
-              blue: '#007aff',
-              purple: '#af52de',
-              indigo: '#5856d6',
-              teal: '#5ac8fa',
-              green: '#34c759',
-              orange: '#ff9500',
-              red: '#ff3b30'
-            }
+            sans: ['Roboto', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
           }
         }
       }
     }
   </script>
 </head>
-<body class="text-slate-100 min-h-screen font-sans flex flex-col antialiased selection:bg-blue-500/30 selection:text-white relative">
+<body class="bg-[#111318] text-[#e2e2e9] min-h-screen font-sans flex flex-col antialiased selection:bg-[#004a98] selection:text-[#d3e3fd]">
 
-  <!-- Apple iOS Liquid Glass Glowing Dynamic Canvas -->
-  <div class="liquid-canvas">
-    <div class="liquid-blob blob-1"></div>
-    <div class="liquid-blob blob-2"></div>
-    <div class="liquid-blob blob-3"></div>
-    <div class="liquid-blob blob-4"></div>
-  </div>
+  <!-- Danger Tension Screen Border Alert -->
+  <div id="tensionVignette" class="fixed inset-0 pointer-events-none transition-opacity duration-500 opacity-0 z-40 border-4 border-[#ffb4ab]"></div>
 
-  <!-- Danger Tension Screen Vignette Overlay -->
-  <div id="tensionVignette" class="fixed inset-0 pointer-events-none transition-opacity duration-700 opacity-0 z-40 border-8 border-red-500/40"></div>
-
-  <!-- Header (iOS Frosted Glass Navigation Bar) -->
-  <header class="ios-glass sticky top-0 z-30 px-6 py-4 flex items-center justify-between border-b border-white/10">
-    <div class="flex items-center space-x-3.5">
-      <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-500 flex items-center justify-center shadow-lg shadow-blue-500/30 border border-white/20">
-        <i data-lucide="swords" class="w-5 h-5 text-white"></i>
+  <!-- M3 Top App Bar -->
+  <header class="m3-top-app-bar sticky top-0 z-30 px-4 md:px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-2xl bg-[#004a98] text-[#d3e3fd] flex items-center justify-center shadow-sm">
+        <span class="material-symbols-outlined text-2xl">swords</span>
       </div>
       <div>
         <div class="flex items-center space-x-2">
-          <h1 class="text-lg font-extrabold tracking-tight text-white drop-shadow-sm">Арена переговоров</h1>
-          <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-semibold border border-blue-400/30 shadow-inner">Spark AI 2.0</span>
+          <h1 class="text-base md:text-lg font-bold tracking-tight text-[#e2e2e9]">Арена переговоров</h1>
+          <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-[#1d2024] text-[#a8c7fa] border border-[#44474f] font-medium">Spark M3</span>
         </div>
-        <p class="text-xs text-slate-300/80 font-medium">Хакатон «Лидеры цифровой трансформации 2026»</p>
+        <p class="text-[11px] text-[#c4c6d0] hidden sm:block">Хакатон «Лидеры цифровой трансформации 2026»</p>
       </div>
     </div>
 
-    <div class="flex items-center space-x-3">
-      <!-- AI Engine Status Badge -->
-      <div id="aiEngineBadge" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/50 border border-emerald-500/40 text-[11px] text-emerald-300 shadow-sm backdrop-blur-md">
-        <span id="aiEngineDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span id="aiEngineText" class="font-mono font-semibold">Gemini 3.6 Flash</span>
+    <div class="flex items-center space-x-2">
+      <!-- AI Engine Status Chip -->
+      <div id="aiEngineBadge" class="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#191c20] border border-[#44474f] text-xs text-[#a8c7fa]">
+        <span id="aiEngineDot" class="w-2 h-2 rounded-full bg-[#6dd58c] animate-pulse"></span>
+        <span id="aiEngineText" class="font-mono text-[11px] font-medium">gemini-3.6-flash</span>
       </div>
 
-      <!-- Persona Badge in Arena -->
-      <div id="headerPersonaBadge" class="hidden items-center space-x-2 px-3 py-1.5 rounded-xl ios-glass text-xs font-semibold">
-        <span class="w-2 h-2 rounded-full bg-red-500" id="personaDot"></span>
+      <!-- Persona Tag (Arena Mode) -->
+      <div id="headerPersonaBadge" class="hidden items-center space-x-1.5 px-3 py-1 rounded-full bg-[#1d2024] border border-[#44474f] text-xs font-medium">
+        <span class="w-2 h-2 rounded-full bg-[#ffb4ab]" id="personaDot"></span>
         <span id="personaHeaderName">The Shark</span>
       </div>
 
       <!-- Settings Button -->
-      <button id="btnSettings" class="p-2.5 rounded-xl ios-glass hover:bg-white/10 text-slate-300 hover:text-white transition shadow-sm" title="Настройки Gemini API">
-        <i data-lucide="settings" class="w-4 h-4"></i>
+      <button id="btnSettings" class="m3-icon-btn" title="Настройки API" aria-label="Настройки">
+        <span class="material-symbols-outlined text-xl">settings</span>
       </button>
 
-      <!-- Restart to Lobby Button -->
-      <button id="btnRestart" class="hidden px-3.5 py-1.5 rounded-xl ios-glass hover:bg-white/10 text-xs font-semibold text-slate-300 hover:text-white transition flex items-center space-x-1.5 shadow-sm">
-        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+      <!-- Back to Lobby Button -->
+      <button id="btnRestart" class="hidden m3-btn-tonal px-3 py-1.5 text-xs font-medium" aria-label="В лобби">
+        <span class="material-symbols-outlined text-sm mr-1">arrow_back</span>
         <span>В лобби</span>
       </button>
     </div>
   </header>
 
-  <!-- Settings Modal (API Key) -->
-  <div id="settingsModal" class="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-    <div class="ios-glass rounded-3xl max-w-md w-full p-6 shadow-2xl border border-white/20">
+  <!-- M3 Settings Dialog / Bottom Sheet -->
+  <div id="settingsModal" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-0 md:p-4 hidden">
+    <div class="m3-card-high w-full max-w-md p-6 border border-[#44474f] shadow-2xl">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="text-base font-bold text-white flex items-center gap-2">
-          <i data-lucide="key" class="w-5 h-5 text-blue-400"></i>
+        <h3 class="text-lg font-bold text-[#e2e2e9] flex items-center gap-2">
+          <span class="material-symbols-outlined text-[#a8c7fa]">key</span>
           Настройки Gemini API
         </h3>
-        <button id="btnCloseSettings" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition">
-          <i data-lucide="x" class="w-5 h-5"></i>
+        <button id="btnCloseSettings" class="m3-icon-btn">
+          <span class="material-symbols-outlined">close</span>
         </button>
       </div>
-      <p class="text-xs text-slate-300 leading-relaxed mb-4">
-        Введите ваш ключ Google Gemini API. Он сохранится в <code class="bg-black/40 px-1.5 py-0.5 rounded text-blue-300 font-mono">.env</code> и обеспечит прямую работу с моделью <b class="text-white">gemini-3.6-flash</b>.
+      <p class="text-xs text-[#c4c6d0] leading-relaxed mb-4">
+        Введите ваш ключ Google Gemini API. Он сохраняется в локальной конфигурации для обращений к модели <b class="text-[#e2e2e9]">gemini-3.6-flash</b>.
       </p>
       <div class="mb-4">
-        <label class="block text-xs font-semibold text-slate-300 mb-1.5">API Key</label>
-        <input type="password" id="inputApiKey" placeholder="AIzaSy..." class="w-full ios-input rounded-xl px-4 py-2.5 text-sm text-white font-mono">
+        <label class="block text-xs font-medium text-[#c4c6d0] mb-1.5">Ключ API (AI Studio)</label>
+        <input type="password" id="inputApiKey" placeholder="AIzaSy..." class="w-full m3-textfield px-4 py-3 text-sm text-[#e2e2e9] font-mono">
       </div>
       <div id="apiKeyStatusMsg" class="text-xs mb-4 hidden"></div>
       <div class="flex justify-end space-x-3">
-        <button id="btnSaveKey" class="px-5 py-2.5 ios-btn-primary text-white text-xs font-bold rounded-xl shadow-lg">
+        <button id="btnSaveKey" class="m3-btn-filled px-6 py-2.5 text-xs font-medium">
           Сохранить ключ
         </button>
       </div>
     </div>
   </div>
 
-  <!-- MAIN VIEW CONTAINER -->
-  <main class="flex-1 flex flex-col p-4 md:p-6 max-w-7xl mx-auto w-full z-10">
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 flex flex-col p-3 md:p-6 max-w-7xl mx-auto w-full">
 
     <!-- SCREEN 1: LOBBY -->
-    <section id="lobbyScreen" class="flex-1 flex flex-col justify-center max-w-4xl mx-auto w-full py-6">
+    <section id="lobbyScreen" class="flex-1 flex flex-col justify-center max-w-4xl mx-auto w-full py-4 md:py-8">
       
-      <div class="text-center mb-10">
-        <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full ios-glass text-xs font-semibold text-blue-300 mb-4 shadow-sm border border-blue-400/20">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-blue-400"></i>
-          <span>ИИ-симулятор с живым адаптивным оппонентом</span>
+      <div class="text-center mb-6 md:mb-10">
+        <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#1d2024] border border-[#44474f] text-xs text-[#a8c7fa] mb-3">
+          <span class="material-symbols-outlined text-sm">smart_toy</span>
+          <span>Адаптивный ИИ-оппонент на базе Material 3</span>
         </div>
-        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight mb-4 drop-shadow-md">
-          Тренажёр сложных переговоров
+        <h2 class="text-2xl sm:text-4xl font-bold text-[#e2e2e9] tracking-tight mb-3">
+          Тренажёр деловых переговоров
         </h2>
-        <p class="text-slate-300 max-w-2xl mx-auto text-sm sm:text-base font-normal leading-relaxed">
-          Выберите стиль оппонента и переговорный кейс. Spark подстраивает тактику, эмоциональное давление и уступки под каждое ваше слово.
+        <p class="text-[#c4c6d0] max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+          Выберите стиль оппонента и переговорный кейс. Spark подстраивает тактику, напряжение и уступки под каждое ваше слово.
         </p>
       </div>
 
-      <!-- Step 1: Select Persona -->
-      <div class="mb-8">
-        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300/80 mb-3">
+      <!-- Step 1: Select Persona (M3 Interactive Cards) -->
+      <div class="mb-6 md:mb-8">
+        <label class="block text-xs font-medium uppercase tracking-wider text-[#c4c6d0] mb-3">
           1. Выберите персону оппонента (Spark)
         </label>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
           
           <!-- Shark -->
-          <div class="persona-card active ios-glass-card p-6 rounded-3xl cursor-pointer transition relative group" data-persona="shark">
-            <div class="w-12 h-12 rounded-2xl bg-red-500/20 border border-red-500/40 flex items-center justify-center mb-4 shadow-md shadow-red-500/20">
-              <i data-lucide="flame" class="w-6 h-6 text-red-400"></i>
+          <div class="persona-card active m3-card m3-card-interactive p-5 md:p-6 cursor-pointer relative" data-persona="shark">
+            <div class="w-12 h-12 rounded-2xl bg-[#5c1d1d] text-[#ffb4ab] flex items-center justify-center mb-3">
+              <span class="material-symbols-outlined text-2xl">local_fire_department</span>
             </div>
             <div class="flex items-center justify-between mb-1.5">
-              <h3 class="font-bold text-white text-base">Жёсткий (The Shark)</h3>
-              <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 font-bold border border-red-500/30">Давление</span>
+              <h3 class="font-bold text-[#e2e2e9] text-base">Жёсткий (The Shark)</h3>
+              <span class="m3-badge bg-[#5c1d1d] text-[#ffdad6] border border-[#93000a]">Давление</span>
             </div>
-            <p class="text-xs text-slate-300/80 leading-relaxed font-normal">
+            <p class="text-xs text-[#c4c6d0] leading-relaxed">
               Ставит ультиматумы, перебивает, давит авторитетом и дедлайнами. Проверяет вашу стрессоустойчивость.
             </p>
           </div>
 
           <!-- Partner -->
-          <div class="persona-card ios-glass-card p-6 rounded-3xl cursor-pointer transition relative group" data-persona="partner">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center mb-4 shadow-md shadow-emerald-500/20">
-              <i data-lucide="handshake" class="w-6 h-6 text-emerald-400"></i>
+          <div class="persona-card m3-card m3-card-interactive p-5 md:p-6 cursor-pointer relative" data-persona="partner">
+            <div class="w-12 h-12 rounded-2xl bg-[#005322] text-[#8cf3a6] flex items-center justify-center mb-3">
+              <span class="material-symbols-outlined text-2xl">handshake</span>
             </div>
             <div class="flex items-center justify-between mb-1.5">
-              <h3 class="font-bold text-white text-base">Кооперативный (The Partner)</h3>
-              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">Win-Win</span>
+              <h3 class="font-bold text-[#e2e2e9] text-base">Кооперативный (The Partner)</h3>
+              <span class="m3-badge bg-[#005322] text-[#8cf3a6] border border-[#6dd58c]/30">Win-Win</span>
             </div>
-            <p class="text-xs text-slate-300/80 leading-relaxed font-normal">
+            <p class="text-xs text-[#c4c6d0] leading-relaxed">
               Ищет совместную выгоду, использует технику «Да, и...», задает открытые вопросы и готов к гибкому торгу.
             </p>
           </div>
 
           <!-- Trickster -->
-          <div class="persona-card ios-glass-card p-6 rounded-3xl cursor-pointer transition relative group" data-persona="trickster">
-            <div class="w-12 h-12 rounded-2xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center mb-4 shadow-md shadow-purple-500/20">
-              <i data-lucide="sparkles" class="w-6 h-6 text-purple-400"></i>
+          <div class="persona-card m3-card m3-card-interactive p-5 md:p-6 cursor-pointer relative" data-persona="trickster">
+            <div class="w-12 h-12 rounded-2xl bg-[#3f4759] text-[#dbe2f9] flex items-center justify-center mb-3">
+              <span class="material-symbols-outlined text-2xl">psychology</span>
             </div>
             <div class="flex items-center justify-between mb-1.5">
-              <h3 class="font-bold text-white text-base">Манипулятор (The Trickster)</h3>
-              <span class="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-bold border border-purple-500/30">Ловушки</span>
+              <h3 class="font-bold text-[#e2e2e9] text-base">Манипулятор (The Trickster)</h3>
+              <span class="m3-badge bg-[#3f4759] text-[#dbe2f9] border border-[#8e9099]/30">Ловушки</span>
             </div>
-            <p class="text-xs text-slate-300/80 leading-relaxed font-normal">
+            <p class="text-xs text-[#c4c6d0] leading-relaxed">
               Искажает факты, сеет сомнения в вашей компетентности и пытается навязать скрытые невыгодные условия.
             </p>
           </div>
@@ -195,103 +175,107 @@
       </div>
 
       <!-- Step 2: Select Scenario & BATNA -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div class="ios-glass-card p-5 rounded-3xl">
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-300/80 mb-2">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8">
+        <div class="m3-card p-4 md:p-5">
+          <label class="block text-xs font-medium uppercase tracking-wider text-[#c4c6d0] mb-2">
             2. Бизнес-сценарий
           </label>
-          <select id="selectScenario" class="w-full ios-input rounded-2xl px-4 py-3 text-sm text-white focus:outline-none">
-            <option value="price_war" class="bg-slate-900 text-white">Битва за цену контракта (IT-инфраструктура)</option>
-            <option value="contract_renewal" class="bg-slate-900 text-white">Продление контракта (+30% к ставке)</option>
-            <option value="deadline_crunch" class="bg-slate-900 text-white">Кризис дедлайна (срыв сроков и доплата)</option>
+          <select id="selectScenario" class="w-full m3-textfield px-4 py-3 text-sm text-[#e2e2e9]">
+            <option value="price_war" class="bg-[#1d2024]">Битва за цену контракта (IT-инфраструктура)</option>
+            <option value="contract_renewal" class="bg-[#1d2024]">Продление контракта (+30% к ставке)</option>
+            <option value="deadline_crunch" class="bg-[#1d2024]">Кризис дедлайна (срыв сроков и доплата)</option>
           </select>
-          <p id="scenarioDesc" class="text-xs text-slate-300 mt-3 italic leading-relaxed">
+          <p id="scenarioDesc" class="text-xs text-[#c4c6d0] mt-3 italic leading-relaxed">
             Переговоры о поставке IT-инфраструктуры. Вы хотите снизить начальную стоимость, оппонент настаивает на максимальной марже.
           </p>
         </div>
 
-        <div class="ios-glass-card p-5 rounded-3xl">
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-300/80 mb-2">
+        <div class="m3-card p-4 md:p-5">
+          <label class="block text-xs font-medium uppercase tracking-wider text-[#c4c6d0] mb-2">
             3. Ваша альтернатива (BATNA)
           </label>
-          <textarea id="inputBatna" rows="3" class="w-full ios-input rounded-2xl px-4 py-2.5 text-xs text-white leading-relaxed" placeholder="Опишите силу вашей позиции...">Средняя: есть предложение от другого поставщика, но внедрение займет на 2 месяца дольше.</textarea>
-          <p class="text-[11px] text-slate-400 mt-2 font-medium">Spark проверяет обоснованность вашей альтернативы при попытке блефа.</p>
+          <textarea id="inputBatna" rows="3" class="w-full m3-textfield px-4 py-2.5 text-xs text-[#e2e2e9] leading-relaxed" placeholder="Опишите силу вашей позиции...">Средняя: есть предложение от другого поставщика, но внедрение займет на 2 месяца дольше.</textarea>
+          <p class="text-[11px] text-[#8e9099] mt-2">Spark проверяет обоснованность вашей альтернативы при попытке блефа.</p>
         </div>
       </div>
 
-      <!-- Start Button -->
+      <!-- Start Button (M3 Large Filled Button) -->
       <div class="flex flex-col items-center">
-        <button id="btnStartGame" class="w-full sm:w-auto px-10 py-4 ios-btn-primary text-white font-extrabold rounded-2xl shadow-xl flex items-center justify-center space-x-3 text-base">
-          <i data-lucide="play" class="w-5 h-5 fill-current"></i>
+        <button id="btnStartGame" class="w-full sm:w-auto px-8 md:px-12 py-4 m3-btn-filled text-sm md:text-base font-bold shadow-md">
+          <span class="material-symbols-outlined mr-2">play_arrow</span>
           <span>Войти на Арену переговоров</span>
         </button>
       </div>
     </section>
 
 
-    <!-- SCREEN 2: NEGOTIATION ARENA -->
-    <section id="arenaScreen" class="hidden flex-1 flex flex-col gap-4">
+    <!-- SCREEN 2: NEGOTIATION ARENA (Mobile Responsive) -->
+    <section id="arenaScreen" class="hidden flex-1 flex flex-col gap-3 md:gap-4">
 
-      <!-- Top Bar: Stages and Realtime Scales -->
-      <div class="ios-glass rounded-3xl p-4 md:p-5 flex flex-col md:flex-row items-center justify-between gap-5 border border-white/15">
-
-        <!-- Stage Progress Flow -->
-        <div class="w-full md:w-1/3">
-          <div class="flex items-center justify-between text-xs mb-2">
-            <span class="text-slate-300 font-semibold">Этап переговоров:</span>
-            <span id="stageLabel" class="text-blue-400 font-bold">1: Установление контакта</span>
-          </div>
-          <div class="grid grid-cols-4 gap-2">
-            <div id="stepBar1" class="h-2 rounded-full bg-blue-500 shadow-sm shadow-blue-500/50 transition-colors"></div>
-            <div id="stepBar2" class="h-2 rounded-full bg-white/10 transition-colors"></div>
-            <div id="stepBar3" class="h-2 rounded-full bg-white/10 transition-colors"></div>
-            <div id="stepBar4" class="h-2 rounded-full bg-white/10 transition-colors"></div>
-          </div>
-        </div>
-
-        <!-- Realtime Game Scales -->
-        <div class="w-full md:w-2/3 grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <!-- Top Dashboard: Stages and Realtime Scales -->
+      <div class="m3-card p-3 md:p-4">
+        
+        <div class="flex flex-col md:flex-row items-center justify-between gap-3 md:gap-6">
           
-          <!-- Trust Metric (-100 to 100) -->
-          <div class="ios-glass-card p-3 rounded-2xl">
+          <!-- Stage Progress Flow -->
+          <div class="w-full md:w-1/3">
             <div class="flex items-center justify-between text-xs mb-1.5">
-              <span class="flex items-center gap-1.5 text-slate-200 font-medium">
-                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
-                <span>Доверие</span>
-              </span>
-              <span id="trustValue" class="font-mono font-bold text-xs text-emerald-400">0</span>
+              <span class="text-[#c4c6d0] font-medium">Этап:</span>
+              <span id="stageLabel" class="text-[#a8c7fa] font-bold">1: Установление контакта</span>
             </div>
-            <div class="h-2 bg-black/40 rounded-full overflow-hidden flex border border-white/5">
-              <div id="trustBar" class="h-full bg-emerald-500 transition-all duration-500" style="width: 50%;"></div>
+            <div class="grid grid-cols-4 gap-1.5">
+              <div id="stepBar1" class="h-2 rounded-full bg-[#a8c7fa] transition-colors"></div>
+              <div id="stepBar2" class="h-2 rounded-full bg-[#33353a] transition-colors"></div>
+              <div id="stepBar3" class="h-2 rounded-full bg-[#33353a] transition-colors"></div>
+              <div id="stepBar4" class="h-2 rounded-full bg-[#33353a] transition-colors"></div>
             </div>
           </div>
 
-          <!-- Tension Metric (-100 to 100) -->
-          <div id="tensionWidget" class="ios-glass-card p-3 rounded-2xl transition-all">
-            <div class="flex items-center justify-between text-xs mb-1.5">
-              <span class="flex items-center gap-1.5 text-slate-200 font-medium">
-                <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-400" id="tensionIcon"></i>
-                <span>Напряжение</span>
-              </span>
-              <span id="tensionValue" class="font-mono font-bold text-xs text-amber-400">10</span>
+          <!-- Realtime Scales -->
+          <div class="w-full md:w-2/3 grid grid-cols-3 gap-2 md:gap-3">
+            
+            <!-- Trust Metric -->
+            <div class="bg-[#191c20] p-2 md:p-2.5 rounded-2xl border border-[#44474f]">
+              <div class="flex items-center justify-between text-xs mb-1">
+                <span class="flex items-center gap-1 text-[#c4c6d0]">
+                  <span class="material-symbols-outlined text-sm text-[#6dd58c]">verified_user</span>
+                  <span class="hidden sm:inline">Доверие</span>
+                </span>
+                <span id="trustValue" class="font-mono font-bold text-xs text-[#6dd58c]">0</span>
+              </div>
+              <div class="m3-progress-track">
+                <div id="trustBar" class="m3-progress-indicator bg-[#6dd58c]" style="width: 50%;"></div>
+              </div>
             </div>
-            <div class="h-2 bg-black/40 rounded-full overflow-hidden border border-white/5">
-              <div id="tensionBar" class="h-full bg-amber-500 transition-all duration-500" style="width: 55%;"></div>
-            </div>
-          </div>
 
-          <!-- Deal Progress (0 to 100) -->
-          <div class="ios-glass-card p-3 rounded-2xl">
-            <div class="flex items-center justify-between text-xs mb-1.5">
-              <span class="flex items-center gap-1.5 text-slate-200 font-medium">
-                <i data-lucide="target" class="w-3.5 h-3.5 text-blue-400"></i>
-                <span>Прогресс</span>
-              </span>
-              <span id="progressValue" class="font-mono font-bold text-xs text-blue-400">0%</span>
+            <!-- Tension Metric -->
+            <div id="tensionWidget" class="bg-[#191c20] p-2 md:p-2.5 rounded-2xl border border-[#44474f] transition-all">
+              <div class="flex items-center justify-between text-xs mb-1">
+                <span class="flex items-center gap-1 text-[#c4c6d0]">
+                  <span class="material-symbols-outlined text-sm text-[#ffb951]" id="tensionIcon">bolt</span>
+                  <span class="hidden sm:inline">Напряжение</span>
+                </span>
+                <span id="tensionValue" class="font-mono font-bold text-xs text-[#ffb951]">10</span>
+              </div>
+              <div class="m3-progress-track">
+                <div id="tensionBar" class="m3-progress-indicator bg-[#ffb951]" style="width: 55%;"></div>
+              </div>
             </div>
-            <div class="h-2 bg-black/40 rounded-full overflow-hidden border border-white/5">
-              <div id="progressBar" class="h-full bg-blue-500 transition-all duration-500" style="width: 0%;"></div>
+
+            <!-- Progress Metric -->
+            <div class="bg-[#191c20] p-2 md:p-2.5 rounded-2xl border border-[#44474f]">
+              <div class="flex items-center justify-between text-xs mb-1">
+                <span class="flex items-center gap-1 text-[#c4c6d0]">
+                  <span class="material-symbols-outlined text-sm text-[#a8c7fa]">target</span>
+                  <span class="hidden sm:inline">Сделка</span>
+                </span>
+                <span id="progressValue" class="font-mono font-bold text-xs text-[#a8c7fa]">0%</span>
+              </div>
+              <div class="m3-progress-track">
+                <div id="progressBar" class="m3-progress-indicator bg-[#a8c7fa]" style="width: 0%;"></div>
+              </div>
             </div>
+
           </div>
 
         </div>
@@ -299,89 +283,95 @@
       </div>
 
       <!-- Main Arena Area: Opponent Sidebar + Chat -->
-      <div class="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-4 min-h-[480px]">
+      <div class="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-3 md:gap-4">
 
-        <!-- Left Column: Opponent Avatar & Status -->
-        <div class="lg:col-span-1 ios-glass rounded-3xl p-5 flex flex-col items-center text-center justify-between border border-white/15 shadow-xl">
-          <div class="w-full flex flex-col items-center">
+        <!-- Opponent Sidebar (Responsive: compact banner on mobile, column on desktop) -->
+        <div class="lg:col-span-1 m3-card p-4 flex flex-col justify-between">
+          
+          <div class="flex flex-row lg:flex-col items-center gap-3 md:gap-4">
             
             <!-- Avatar Face Container -->
-            <div id="avatarContainer" class="relative w-28 h-28 rounded-3xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center mb-3.5 shadow-xl overflow-hidden transition-all duration-300">
-              <div id="avatarEmoji" class="text-5xl select-none">🦈</div>
-              <div id="moodBadge" class="absolute bottom-2 right-2 px-2 py-0.5 rounded-lg bg-black/60 backdrop-blur-md text-[10px] font-bold text-slate-200 border border-white/10">
+            <div id="avatarContainer" class="relative w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-3xl bg-[#191c20] border border-[#44474f] flex items-center justify-center shadow-inner shrink-0">
+              <div id="avatarEmoji" class="text-3xl sm:text-4xl select-none">🦈</div>
+              <div id="moodBadge" class="absolute bottom-1 right-1 px-1.5 py-0.5 rounded-md bg-[#111318] text-[9px] font-bold text-[#c4c6d0] border border-[#44474f]">
                 Жёсткий
               </div>
             </div>
 
-            <h3 class="font-extrabold text-white text-base" id="arenaOpponentName">Spark: The Shark</h3>
-            <p class="text-xs text-slate-300 mb-3.5 font-medium" id="arenaOpponentSubtitle">Коммерческий директор</p>
-
-            <div class="w-full text-left ios-glass-card p-3.5 rounded-2xl text-xs space-y-2.5">
-              <div class="flex justify-between">
-                <span class="text-slate-400">Стиль:</span>
-                <span id="arenaStyleTag" class="text-red-400 font-bold">Агрессивный торг</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-slate-400">Цель:</span>
-                <span class="text-slate-200 font-medium">Максимум маржи</span>
-              </div>
-              <div class="pt-2 border-t border-white/10 text-[11px] text-slate-300 leading-tight">
-                <span class="text-slate-400">BATNA:</span> <span id="arenaBatnaText"></span>
+            <div class="text-left lg:text-center w-full">
+              <h3 class="font-bold text-[#e2e2e9] text-sm sm:text-base" id="arenaOpponentName">Spark: The Shark</h3>
+              <p class="text-xs text-[#c4c6d0] mb-2" id="arenaOpponentSubtitle">Коммерческий директор</p>
+              
+              <div class="hidden sm:block text-left bg-[#191c20] p-2.5 rounded-xl border border-[#44474f] text-[11px] space-y-1.5">
+                <div class="flex justify-between">
+                  <span class="text-[#8e9099]">Стиль:</span>
+                  <span id="arenaStyleTag" class="text-[#ffb4ab] font-medium">Агрессивный торг</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-[#8e9099]">Цель:</span>
+                  <span class="text-[#e2e2e9]">Максимум маржи</span>
+                </div>
+                <div class="pt-1 border-t border-[#44474f] text-[10px] text-[#c4c6d0]">
+                  <span class="text-[#8e9099]">BATNA:</span> <span id="arenaBatnaText"></span>
+                </div>
               </div>
             </div>
+
           </div>
 
           <!-- Coach Hint Box -->
-          <div id="coachHintBox" class="w-full mt-4 ios-glass-card p-3.5 rounded-2xl text-left transition-all border border-blue-400/30">
-            <div class="flex items-center space-x-1.5 text-blue-300 text-xs font-bold mb-1">
-              <i data-lucide="lightbulb" class="w-3.5 h-3.5"></i>
+          <div id="coachHintBox" class="w-full mt-3 bg-[#004a98]/20 border border-[#a8c7fa]/40 p-3 rounded-2xl text-left">
+            <div class="flex items-center space-x-1.5 text-[#a8c7fa] text-xs font-bold mb-1">
+              <span class="material-symbols-outlined text-sm">lightbulb</span>
               <span>Подсказка наставника</span>
             </div>
-            <p id="coachHintText" class="text-xs text-slate-200 leading-relaxed italic">
+            <p id="coachHintText" class="text-xs text-[#d3e3fd] leading-relaxed italic">
               Внимательно выслушайте первое предложение и не соглашайтесь сразу. Прозондируйте гибкость оппонента.
             </p>
           </div>
 
-          <button id="btnForceDebrief" class="w-full mt-3.5 py-2.5 px-3 rounded-2xl ios-glass hover:bg-white/10 text-slate-200 hover:text-white text-xs font-bold transition flex items-center justify-center space-x-1.5 shadow">
-            <i data-lucide="flag" class="w-3.5 h-3.5"></i>
+          <button id="btnForceDebrief" class="w-full mt-3 py-2 px-3 m3-btn-tonal text-xs font-medium" aria-label="Завершить и разобрать">
+            <span class="material-symbols-outlined text-sm mr-1">flag</span>
             <span>Завершить и разобрать</span>
           </button>
         </div>
 
-        <!-- Right Column: Chat Dialogue Box -->
-        <div class="lg:col-span-3 ios-glass rounded-3xl flex flex-col border border-white/15 shadow-xl overflow-hidden">
+        <!-- Chat Dialogue Box -->
+        <div class="lg:col-span-3 m3-card flex flex-col overflow-hidden">
           
           <!-- Messages Scroll Area -->
-          <div id="chatMessages" class="flex-1 p-4 md:p-6 overflow-y-auto space-y-4 max-h-[500px]">
+          <div id="chatMessages" class="flex-1 p-3 md:p-6 overflow-y-auto space-y-3 md:space-y-4 min-h-[300px] max-h-[460px]">
             <!-- Messages inserted dynamically via JS -->
           </div>
 
           <!-- Typing Indicator -->
-          <div id="typingIndicator" class="px-6 py-2.5 text-xs text-slate-300 hidden items-center space-x-2 bg-black/20 backdrop-blur">
-            <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
-            <span class="font-medium">Spark обдумывает ответ...</span>
+          <div id="typingIndicator" class="px-4 py-2 text-xs text-[#c4c6d0] hidden items-center space-x-2 bg-[#191c20]">
+            <span class="w-2 h-2 rounded-full bg-[#a8c7fa] animate-pulse"></span>
+            <span>Spark формулирует аргумент...</span>
           </div>
 
-          <!-- Quick Tactics Chips -->
-          <div class="px-4 py-2.5 border-t border-white/10 bg-black/20 backdrop-blur-md flex flex-wrap gap-2 text-xs">
-            <span class="text-slate-400 self-center text-[11px] font-semibold mr-1">Быстрые тактики:</span>
-            <button class="tactic-chip ios-glass-pill px-3 py-1.5 rounded-xl text-slate-200 text-xs font-medium cursor-pointer" data-text="Я понимаю вашу позицию. А что, если мы рассмотрим альтернативу: сохраняем бюджет, но расширяем горизонт сотрудничества?">
-              🤝 «Да, и...» (Win-Win)
+          <!-- Quick Tactics Chips (Swipeable on Mobile) -->
+          <div class="px-3 py-2 border-t border-[#44474f] bg-[#191c20] chips-scroll-container gap-2">
+            <button class="tactic-chip m3-chip px-3 py-1.5 shrink-0" data-text="Я понимаю вашу позицию. А что, если мы рассмотрим альтернативу: сохраняем бюджет, но расширяем горизонт сотрудничества?">
+              <span class="material-symbols-outlined text-xs mr-1 text-[#6dd58c]">handshake</span>
+              «Да, и...» (Win-Win)
             </button>
-            <button class="tactic-chip ios-glass-pill px-3 py-1.5 rounded-xl text-slate-200 text-xs font-medium cursor-pointer" data-text="Каковы главные риски для вашей компании, если мы не согласуем этот пункт прямо сейчас?">
-              🎯 SPIN: Извлекающий вопрос
+            <button class="tactic-chip m3-chip px-3 py-1.5 shrink-0" data-text="Каковы главные риски для вашей компании, если мы не согласуем этот пункт прямо сейчас?">
+              <span class="material-symbols-outlined text-xs mr-1 text-[#a8c7fa]">psychology_alt</span>
+              SPIN: Извлекающий вопрос
             </button>
-            <button class="tactic-chip ios-glass-pill px-3 py-1.5 rounded-xl text-slate-200 text-xs font-medium cursor-pointer" data-text="Мы ценим сотрудничество с вами, однако у нас есть альтернативные предложения на рынке. Давайте искать взаимную выгоду.">
-              ⚖️ Обозначить BATNA
+            <button class="tactic-chip m3-chip px-3 py-1.5 shrink-0" data-text="Мы ценим сотрудничество с вами, однако у нас есть альтернативные предложения на рынке. Давайте искать взаимную выгоду.">
+              <span class="material-symbols-outlined text-xs mr-1 text-[#ffb951]">balance</span>
+              Обозначить BATNA
             </button>
           </div>
 
           <!-- Chat Input Bar -->
-          <form id="chatForm" class="p-4 bg-black/30 border-t border-white/10 flex items-center space-x-3">
-            <input type="text" id="userInput" placeholder="Напишите ваш аргумент или встречное предложение..." class="flex-1 ios-input rounded-2xl px-4 py-3.5 text-sm text-white focus:outline-none placeholder-slate-400" autocomplete="off">
-            <button type="submit" id="btnSend" class="px-6 py-3.5 ios-btn-primary text-white font-bold rounded-2xl transition flex items-center space-x-2 disabled:opacity-50 shadow-lg">
-              <span>Ответить</span>
-              <i data-lucide="send" class="w-4 h-4"></i>
+          <form id="chatForm" class="p-3 md:p-4 bg-[#191c20] border-t border-[#44474f] flex items-center space-x-2">
+            <input type="text" id="userInput" placeholder="Напишите ваш аргумент..." class="flex-1 m3-textfield px-4 py-3 text-sm text-[#e2e2e9] placeholder-[#8e9099]" autocomplete="off">
+            <button type="submit" id="btnSend" class="m3-btn-filled w-12 h-12 md:w-auto md:px-6 md:py-3 shrink-0" aria-label="Отправить">
+              <span class="hidden md:inline mr-1 text-sm font-medium">Ответить</span>
+              <span class="material-symbols-outlined text-xl">send</span>
             </button>
           </form>
 
@@ -392,110 +382,110 @@
     </section>
 
 
-    <!-- SCREEN 3: DEBRIEF & RESULTS MODAL -->
-    <div id="debriefModal" class="fixed inset-0 bg-black/70 backdrop-blur-xl z-50 flex items-center justify-center p-4 hidden overflow-y-auto">
-      <div class="ios-glass rounded-3xl max-w-3xl w-full p-6 md:p-8 shadow-2xl my-8 max-h-[90vh] overflow-y-auto border border-white/20">
+    <!-- SCREEN 3: M3 DEBRIEF MODAL / FULLSCREEN DIALOG -->
+    <div id="debriefModal" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-0 md:p-4 hidden overflow-y-auto">
+      <div class="m3-card-high max-w-3xl w-full p-4 md:p-8 shadow-2xl my-auto max-h-[94vh] overflow-y-auto border border-[#44474f]">
         
         <!-- Debrief Header -->
         <div class="text-center mb-6">
-          <div id="debriefEndingBadge" class="inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+          <div id="debriefEndingBadge" class="inline-block px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2 bg-[#005322] text-[#8cf3a6] border border-[#6dd58c]/40">
             Сделка достигнута (Win-Win)
           </div>
-          <h2 class="text-2xl md:text-3xl font-black text-white drop-shadow">Разбор переговоров (Debrief)</h2>
-          <p id="debriefEndingReason" class="text-sm text-slate-300 mt-2 max-w-xl mx-auto font-medium"></p>
+          <h2 class="text-xl md:text-3xl font-bold text-[#e2e2e9]">Разбор переговоров (Debrief)</h2>
+          <p id="debriefEndingReason" class="text-xs md:text-sm text-[#c4c6d0] mt-1 max-w-xl mx-auto"></p>
         </div>
 
-        <!-- Overall Score Gauge -->
-        <div class="ios-glass-card rounded-2xl p-6 mb-6 flex flex-col sm:flex-row items-center justify-between gap-6 border border-white/15">
-          <div class="flex items-center space-x-5">
-            <div class="relative w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30 border border-white/20">
-              <span id="debriefScore" class="text-3xl font-black text-white font-mono">85</span>
+        <!-- Overall Score Card -->
+        <div class="bg-[#191c20] border border-[#44474f] rounded-3xl p-5 mb-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center space-x-4">
+            <div class="w-16 h-16 rounded-2xl bg-[#004a98] text-[#d3e3fd] flex items-center justify-center shadow-md">
+              <span id="debriefScore" class="text-2xl md:text-3xl font-bold font-mono">85</span>
             </div>
             <div>
-              <h4 class="font-extrabold text-white text-base">Индекс переговорного мастерства</h4>
-              <p class="text-xs text-slate-300">Гарвардский метод • Вопросы SPIN • Управление эмоциями</p>
+              <h4 class="font-bold text-[#e2e2e9] text-sm md:text-base">Индекс мастерства</h4>
+              <p class="text-xs text-[#8e9099]">Гарвардский метод • Вопросы SPIN • BATNA</p>
             </div>
           </div>
-          <div class="text-xs text-slate-300 space-y-1 sm:text-right font-medium">
-            <div>Доверие: <span id="debriefFinalTrust" class="font-mono font-bold text-emerald-400">+25</span></div>
-            <div>Напряжение: <span id="debriefFinalTension" class="font-mono font-bold text-amber-400">30</span></div>
-            <div>Прогресс: <span id="debriefFinalProgress" class="font-mono font-bold text-blue-400">80%</span></div>
+          <div class="text-xs text-[#c4c6d0] flex sm:flex-col gap-3 sm:gap-1 sm:text-right">
+            <div>Доверие: <span id="debriefFinalTrust" class="font-mono font-bold text-[#6dd58c]">+25</span></div>
+            <div>Напряжение: <span id="debriefFinalTension" class="font-mono font-bold text-[#ffb951]">30</span></div>
+            <div>Прогресс: <span id="debriefFinalProgress" class="font-mono font-bold text-[#a8c7fa]">80%</span></div>
           </div>
         </div>
 
         <!-- Deep Analysis Blocks -->
-        <div class="space-y-4 mb-6">
+        <div class="space-y-3 mb-6">
           
           <!-- Summary -->
-          <div class="ios-glass-card p-4 rounded-2xl border border-white/10">
-            <h5 class="text-xs font-bold uppercase text-slate-300 mb-1.5 flex items-center gap-1.5">
-              <i data-lucide="file-text" class="w-4 h-4 text-blue-400"></i>
+          <div class="bg-[#191c20] border border-[#44474f] p-4 rounded-2xl">
+            <h5 class="text-xs font-bold uppercase text-[#a8c7fa] mb-1 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">description</span>
               Краткое резюме раунда
             </h5>
-            <p id="debriefSummary" class="text-xs text-slate-200 leading-relaxed font-normal"></p>
+            <p id="debriefSummary" class="text-xs text-[#c4c6d0] leading-relaxed"></p>
           </div>
 
           <!-- Harvard Method -->
-          <div class="ios-glass-card p-4 rounded-2xl border border-white/10">
-            <h5 class="text-xs font-bold uppercase text-slate-300 mb-1.5 flex items-center gap-1.5">
-              <i data-lucide="scale" class="w-4 h-4 text-emerald-400"></i>
+          <div class="bg-[#191c20] border border-[#44474f] p-4 rounded-2xl">
+            <h5 class="text-xs font-bold uppercase text-[#6dd58c] mb-1 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">balance</span>
               Гарвардская модель (Принципиальные переговоры)
             </h5>
-            <p id="debriefHarvard" class="text-xs text-slate-200 leading-relaxed font-normal"></p>
+            <p id="debriefHarvard" class="text-xs text-[#c4c6d0] leading-relaxed"></p>
           </div>
 
           <!-- SPIN & BATNA -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="ios-glass-card p-4 rounded-2xl border border-white/10">
-              <h5 class="text-xs font-bold uppercase text-slate-300 mb-1.5 flex items-center gap-1.5">
-                <i data-lucide="help-circle" class="w-4 h-4 text-purple-400"></i>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="bg-[#191c20] border border-[#44474f] p-4 rounded-2xl">
+              <h5 class="text-xs font-bold uppercase text-[#bfc6dc] mb-1 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">help</span>
                 SPIN-вопросы
               </h5>
-              <p id="debriefSpin" class="text-xs text-slate-200 leading-relaxed font-normal"></p>
+              <p id="debriefSpin" class="text-xs text-[#c4c6d0] leading-relaxed"></p>
             </div>
-            <div class="ios-glass-card p-4 rounded-2xl border border-white/10">
-              <h5 class="text-xs font-bold uppercase text-slate-300 mb-1.5 flex items-center gap-1.5">
-                <i data-lucide="shield" class="w-4 h-4 text-amber-400"></i>
+            <div class="bg-[#191c20] border border-[#44474f] p-4 rounded-2xl">
+              <h5 class="text-xs font-bold uppercase text-[#ffb951] mb-1 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">shield</span>
                 Работа с BATNA
               </h5>
-              <p id="debriefBatna" class="text-xs text-slate-200 leading-relaxed font-normal"></p>
+              <p id="debriefBatna" class="text-xs text-[#c4c6d0] leading-relaxed"></p>
             </div>
           </div>
 
           <!-- Strengths and Weaknesses -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="bg-emerald-950/30 border border-emerald-500/30 p-4 rounded-2xl backdrop-blur-md">
-              <h5 class="text-xs font-bold uppercase text-emerald-300 mb-2 flex items-center gap-1.5">
-                <i data-lucide="check-circle" class="w-4 h-4"></i>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="bg-[#005322]/20 border border-[#6dd58c]/40 p-4 rounded-2xl">
+              <h5 class="text-xs font-bold uppercase text-[#8cf3a6] mb-2 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">check_circle</span>
                 Сильные стороны
               </h5>
-              <ul id="debriefStrengths" class="text-xs text-slate-200 space-y-1.5 list-disc list-inside font-normal"></ul>
+              <ul id="debriefStrengths" class="text-xs text-[#e2e2e9] space-y-1.5 list-disc list-inside"></ul>
             </div>
 
-            <div class="bg-red-950/30 border border-red-500/30 p-4 rounded-2xl backdrop-blur-md">
-              <h5 class="text-xs font-bold uppercase text-red-300 mb-2 flex items-center gap-1.5">
-                <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+            <div class="bg-[#93000a]/20 border border-[#ffb4ab]/40 p-4 rounded-2xl">
+              <h5 class="text-xs font-bold uppercase text-[#ffdad6] mb-2 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">warning</span>
                 Точки роста / Ошибки
               </h5>
-              <ul id="debriefWeaknesses" class="text-xs text-slate-200 space-y-1.5 list-disc list-inside font-normal"></ul>
+              <ul id="debriefWeaknesses" class="text-xs text-[#e2e2e9] space-y-1.5 list-disc list-inside"></ul>
             </div>
           </div>
 
-          <!-- Actionable Recommendations -->
-          <div class="bg-blue-950/30 border border-blue-500/30 p-4 rounded-2xl backdrop-blur-md">
-            <h5 class="text-xs font-bold uppercase text-blue-300 mb-2 flex items-center gap-1.5">
-              <i data-lucide="compass" class="w-4 h-4"></i>
+          <!-- Recommendations -->
+          <div class="bg-[#004a98]/20 border border-[#a8c7fa]/40 p-4 rounded-2xl">
+            <h5 class="text-xs font-bold uppercase text-[#d3e3fd] mb-2 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">explore</span>
               Практические рекомендации на будущее
             </h5>
-            <ul id="debriefRecommendations" class="text-xs text-slate-200 space-y-1.5 list-disc list-inside font-normal"></ul>
+            <ul id="debriefRecommendations" class="text-xs text-[#e2e2e9] space-y-1.5 list-disc list-inside"></ul>
           </div>
 
         </div>
 
         <!-- Debrief Actions -->
-        <div class="flex justify-center space-x-4">
-          <button id="btnDebriefPlayAgain" class="px-8 py-3.5 ios-btn-primary text-white font-extrabold text-sm rounded-2xl shadow-xl flex items-center space-x-2">
-            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+        <div class="flex justify-center">
+          <button id="btnDebriefPlayAgain" class="m3-btn-filled px-8 py-3 text-sm font-bold shadow-md">
+            <span class="material-symbols-outlined mr-1.5">refresh</span>
             <span>Сыграть новый раунд</span>
           </button>
         </div>

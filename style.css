@@ -1,239 +1,358 @@
 /* ==========================================================================
-   Apple iOS Liquid Glass (Жидкое стекло) & Montserrat Design System
+   Google Material Design 3 (Material You) Design System
+   Figma Kit Reference: Material 3 Design Kit (Dark Theme Baseline)
    ========================================================================== */
 
 :root {
-  --ios-font: 'Montserrat', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-  --glass-bg-primary: rgba(17, 24, 39, 0.55);
-  --glass-bg-card: rgba(255, 255, 255, 0.04);
-  --glass-bg-card-hover: rgba(255, 255, 255, 0.08);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-bright: rgba(255, 255, 255, 0.24);
-  --glass-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
-  --ios-blue: #007aff;
-  --ios-blue-glow: rgba(0, 122, 255, 0.35);
+  /* Typography */
+  --md-ref-typeface-brand: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --md-ref-typeface-plain: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* M3 Dark Theme Tonal Surface Tokens */
+  --md-sys-color-background: #111318;
+  --md-sys-color-on-background: #e2e2e9;
+  --md-sys-color-surface: #111318;
+  --md-sys-color-surface-dim: #111318;
+  --md-sys-color-surface-bright: #37393e;
+
+  --md-sys-color-surface-container-lowest: #0c0e13;
+  --md-sys-color-surface-container-low: #191c20;
+  --md-sys-color-surface-container: #1d2024;
+  --md-sys-color-surface-container-high: #282a2f;
+  --md-sys-color-surface-container-highest: #33353a;
+
+  --md-sys-color-on-surface: #e2e2e9;
+  --md-sys-color-on-surface-variant: #c4c6d0;
+  --md-sys-color-outline: #8e9099;
+  --md-sys-color-outline-variant: #44474f;
+
+  /* M3 Primary (Google Blue Tones) */
+  --md-sys-color-primary: #a8c7fa;
+  --md-sys-color-on-primary: #08306b;
+  --md-sys-color-primary-container: #004a98;
+  --md-sys-color-on-primary-container: #d3e3fd;
+
+  /* M3 Secondary */
+  --md-sys-color-secondary: #bfc6dc;
+  --md-sys-color-on-secondary: #283042;
+  --md-sys-color-secondary-container: #3f4759;
+  --md-sys-color-on-secondary-container: #dbe2f9;
+
+  /* M3 Tertiary (Coral / Alert / Shark Tones) */
+  --md-sys-color-tertiary: #ffb4ab;
+  --md-sys-color-on-tertiary: #690005;
+  --md-sys-color-tertiary-container: #5c1d1d;
+  --md-sys-color-on-tertiary-container: #ffdad6;
+
+  /* M3 Success / Partner Green Tones */
+  --md-sys-color-success: #6dd58c;
+  --md-sys-color-on-success: #003915;
+  --md-sys-color-success-container: #005322;
+  --md-sys-color-on-success-container: #8cf3a6;
+
+  /* M3 Warning / Tension Amber Tones */
+  --md-sys-color-warning: #ffb951;
+  --md-sys-color-on-warning: #452b00;
+  --md-sys-color-warning-container: #633f00;
+  --md-sys-color-on-warning-container: #ffddb3;
+
+  /* M3 Error */
+  --md-sys-color-error: #ffb4ab;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-error-container: #93000a;
+  --md-sys-color-on-error-container: #ffdad6;
+
+  /* M3 Shape Radius */
+  --md-shape-corner-xs: 4px;
+  --md-shape-corner-s: 8px;
+  --md-shape-corner-m: 12px;
+  --md-shape-corner-l: 16px;
+  --md-shape-corner-xl: 28px;
+  --md-shape-corner-full: 9999px;
+
+  /* M3 Elevation Shadows */
+  --md-sys-elevation-1: 0 1px 3px 1px rgba(0, 0, 0, 0.25), 0 1px 2px 0 rgba(0, 0, 0, 0.35);
+  --md-sys-elevation-2: 0 2px 6px 2px rgba(0, 0, 0, 0.25), 0 1px 2px 0 rgba(0, 0, 0, 0.35);
+  --md-sys-elevation-3: 0 4px 8px 3px rgba(0, 0, 0, 0.25), 0 1px 3px 0 rgba(0, 0, 0, 0.35);
+  --md-sys-elevation-4: 0 6px 10px 4px rgba(0, 0, 0, 0.25), 0 2px 3px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* Base resets & typography */
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  font-family: var(--ios-font);
-  background-color: #070a12;
+  font-family: var(--md-ref-typeface-plain);
+  background-color: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-background);
+  margin: 0;
+  padding: 0;
   overflow-x: hidden;
-  letter-spacing: -0.015em;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Material Symbols icon sizing helper */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+  display: inline-block;
+  user-select: none;
+}
+.material-symbols-outlined.fill {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
 /* --------------------------------------------------------------------------
-   Liquid Wallpaper Floating Animated Glowing Orbs
+   M3 Top App Bar
    -------------------------------------------------------------------------- */
-.liquid-canvas {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  overflow: hidden;
-}
-
-.liquid-blob {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.45;
-  will-change: transform;
-}
-
-.blob-1 {
-  width: 550px;
-  height: 550px;
-  top: -120px;
-  left: -80px;
-  background: radial-gradient(circle, #3b82f6 0%, #1d4ed8 60%, transparent 80%);
-  animation: floatOrb1 22s infinite alternate ease-in-out;
-}
-
-.blob-2 {
-  width: 600px;
-  height: 600px;
-  bottom: -150px;
-  right: -100px;
-  background: radial-gradient(circle, #7c3aed 0%, #4338ca 60%, transparent 80%);
-  animation: floatOrb2 26s infinite alternate ease-in-out;
-}
-
-.blob-3 {
-  width: 480px;
-  height: 480px;
-  top: 35%;
-  left: 45%;
-  background: radial-gradient(circle, #06b6d4 0%, #0284c7 60%, transparent 80%);
-  animation: floatOrb3 20s infinite alternate ease-in-out;
-  opacity: 0.3;
-}
-
-.blob-4 {
-  width: 420px;
-  height: 420px;
-  top: 60%;
-  left: 10%;
-  background: radial-gradient(circle, #ec4899 0%, #8b5cf6 60%, transparent 80%);
-  animation: floatOrb4 24s infinite alternate ease-in-out;
-  opacity: 0.25;
-}
-
-@keyframes floatOrb1 {
-  0%   { transform: translate(0, 0) scale(1); }
-  50%  { transform: translate(120px, 80px) scale(1.12); }
-  100% { transform: translate(40px, 140px) scale(0.95); }
-}
-
-@keyframes floatOrb2 {
-  0%   { transform: translate(0, 0) scale(1); }
-  50%  { transform: translate(-100px, -90px) scale(1.08); }
-  100% { transform: translate(-50px, -160px) scale(0.92); }
-}
-
-@keyframes floatOrb3 {
-  0%   { transform: translate(0, 0) scale(1); }
-  50%  { transform: translate(-80px, 60px) scale(1.15); }
-  100% { transform: translate(70px, -70px) scale(0.9); }
-}
-
-@keyframes floatOrb4 {
-  0%   { transform: translate(0, 0) scale(0.9); }
-  50%  { transform: translate(90px, -60px) scale(1.1); }
-  100% { transform: translate(20px, -110px) scale(1.05); }
+.m3-top-app-bar {
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: var(--md-sys-elevation-1);
 }
 
 /* --------------------------------------------------------------------------
-   Apple Liquid Glassmorphism Core Classes
+   M3 Cards (Surface Containers)
    -------------------------------------------------------------------------- */
-.ios-glass {
-  background: var(--glass-bg-primary);
-  backdrop-filter: blur(28px) saturate(190%);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
-  border: 1px solid var(--glass-border);
-  box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.4), var(--glass-specular);
+.m3-card {
+  background-color: var(--md-sys-color-surface-container);
+  border-radius: var(--md-shape-corner-xl);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: var(--md-sys-elevation-1);
+  transition: background-color 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
 
-.ios-glass-card {
-  background: var(--glass-bg-card);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid var(--glass-border);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25), var(--glass-specular);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+.m3-card-high {
+  background-color: var(--md-sys-color-surface-container-high);
+  border-radius: var(--md-shape-corner-xl);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: var(--md-sys-elevation-2);
 }
 
-.ios-glass-card:hover {
-  background: var(--glass-bg-card-hover);
-  border-color: var(--glass-border-bright);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
+.m3-card-interactive {
+  cursor: pointer;
+}
+.m3-card-interactive:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+  box-shadow: var(--md-sys-elevation-2);
 }
 
-.ios-glass-pill {
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+/* Persona active selection: M3 Secondary Container + Outline */
+.persona-card.active {
+  background-color: var(--md-sys-color-secondary-container) !important;
+  border: 2px solid var(--md-sys-color-primary) !important;
+  box-shadow: var(--md-sys-elevation-3);
+}
+
+/* --------------------------------------------------------------------------
+   M3 Buttons
+   -------------------------------------------------------------------------- */
+.m3-btn-filled {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-radius: var(--md-shape-corner-full);
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  box-shadow: var(--md-sys-elevation-1);
+}
+.m3-btn-filled:hover:not(:disabled) {
+  box-shadow: var(--md-sys-elevation-2);
+  filter: brightness(1.08);
+}
+.m3-btn-filled:active:not(:disabled) {
+  box-shadow: var(--md-sys-elevation-1);
+  transform: scale(0.98);
+}
+.m3-btn-filled:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.m3-btn-tonal {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-radius: var(--md-shape-corner-full);
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+.m3-btn-tonal:hover {
+  filter: brightness(1.1);
+  box-shadow: var(--md-sys-elevation-1);
+}
+.m3-btn-tonal:active {
+  transform: scale(0.98);
+}
+
+.m3-btn-outlined {
+  background-color: transparent;
+  color: var(--md-sys-color-primary);
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: var(--md-shape-corner-full);
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.2s ease;
 }
+.m3-btn-outlined:hover {
+  background-color: rgba(168, 199, 250, 0.08);
+  border-color: var(--md-sys-color-primary);
+}
 
-.ios-glass-pill:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.25);
-  transform: scale(1.02);
+.m3-icon-btn {
+  background-color: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  border-radius: var(--md-shape-corner-full);
+  border: none;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.m3-icon-btn:hover {
+  background-color: rgba(226, 226, 233, 0.08);
+  color: var(--md-sys-color-on-surface);
+}
+.m3-icon-btn:active {
+  background-color: rgba(226, 226, 233, 0.12);
 }
 
 /* --------------------------------------------------------------------------
-   iOS Inputs & Buttons
+   M3 Chips (Assist / Suggestion / Action)
    -------------------------------------------------------------------------- */
-.ios-input {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  color: #fff;
-  transition: all 0.25s ease;
+.m3-chip {
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-shape-corner-s);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  transition: all 0.2s ease;
 }
-
-.ios-input:focus {
-  outline: none;
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(0, 122, 255, 0.8);
-  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+.m3-chip:hover {
+  background-color: var(--md-sys-color-surface-container-highest);
+  border-color: var(--md-sys-color-outline);
 }
-
-.ios-btn-primary {
-  background: linear-gradient(135deg, #007aff 0%, #0059c6 100%);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.4);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.ios-btn-primary:hover {
-  background: linear-gradient(135deg, #1a8bff 0%, #0066e3 100%);
-  box-shadow: 0 10px 28px rgba(0, 122, 255, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.5);
-  transform: translateY(-1px);
-}
-
-.ios-btn-primary:active {
-  transform: scale(0.97);
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+.m3-chip:active {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
 }
 
 /* --------------------------------------------------------------------------
-   Chat Bubbles (iOS iMessage Frosted Glass Aesthetics)
+   M3 Outlined Text Fields
+   -------------------------------------------------------------------------- */
+.m3-textfield {
+  background-color: var(--md-sys-color-surface-container-highest);
+  border: 1px solid var(--md-sys-color-outline);
+  color: var(--md-sys-color-on-surface);
+  border-radius: var(--md-shape-corner-l);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.m3-textfield:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  box-shadow: 0 0 0 1px var(--md-sys-color-primary);
+}
+
+/* --------------------------------------------------------------------------
+   M3 Linear Progress Indicator
+   -------------------------------------------------------------------------- */
+.m3-progress-track {
+  background-color: var(--md-sys-color-surface-container-highest);
+  border-radius: var(--md-shape-corner-full);
+  overflow: hidden;
+  height: 6px;
+}
+.m3-progress-indicator {
+  height: 100%;
+  border-radius: var(--md-shape-corner-full);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   M3 Chat Bubbles (Google Messages Style)
    -------------------------------------------------------------------------- */
 .message-bubble {
-  animation: fadeInBubble 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: m3FadeIn 0.2s cubic-bezier(0.2, 0, 0, 1) forwards;
 }
 
-@keyframes fadeInBubble {
+@keyframes m3FadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px) scale(0.98);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
-.bubble-user {
-  background: linear-gradient(145deg, #007aff 0%, #005ce6 100%);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+.m3-bubble-user {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
   border-radius: 20px 20px 4px 20px;
+  box-shadow: var(--md-sys-elevation-1);
 }
 
-.bubble-spark {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+.m3-bubble-spark {
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 20px 20px 20px 4px;
+  box-shadow: var(--md-sys-elevation-1);
 }
 
 /* --------------------------------------------------------------------------
-   Tension Pulsing & Vignette
+   M3 Badges
    -------------------------------------------------------------------------- */
-@keyframes dangerPulse {
+.m3-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--md-shape-corner-full);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+/* --------------------------------------------------------------------------
+   Tension Warning & Avatar Animation
+   -------------------------------------------------------------------------- */
+@keyframes m3TensionAlert {
   0%, 100% {
-    box-shadow: inset 0 0 40px rgba(239, 68, 68, 0.35), 0 0 25px rgba(239, 68, 68, 0.3);
-    border-color: rgba(239, 68, 68, 0.7);
+    border-color: var(--md-sys-color-error);
+    box-shadow: 0 0 12px rgba(255, 180, 171, 0.35);
   }
   50% {
-    box-shadow: inset 0 0 80px rgba(239, 68, 68, 0.7), 0 0 45px rgba(239, 68, 68, 0.55);
-    border-color: rgba(239, 68, 68, 1);
+    border-color: var(--md-sys-color-error-container);
+    box-shadow: 0 0 24px rgba(255, 180, 171, 0.65);
   }
 }
 
 .tension-danger-pulse {
-  animation: dangerPulse 1.5s infinite ease-in-out;
+  animation: m3TensionAlert 1.6s infinite ease-in-out;
 }
 
 .avatar-stressed {
@@ -241,18 +360,13 @@ body {
 }
 
 @keyframes avatarShake {
-  0% { transform: rotate(-2deg) scale(1.02); }
-  100% { transform: rotate(2deg) scale(1.02); }
+  0% { transform: rotate(-2deg); }
+  100% { transform: rotate(2deg); }
 }
 
-/* Persona active selection border */
-.persona-card.active {
-  border-color: rgba(0, 122, 255, 0.9) !important;
-  background: rgba(0, 122, 255, 0.1) !important;
-  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.4), 0 12px 32px rgba(0, 122, 255, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
-}
-
-/* iOS Glass Scrollbars */
+/* --------------------------------------------------------------------------
+   Scrollbars
+   -------------------------------------------------------------------------- */
 #chatMessages::-webkit-scrollbar {
   width: 6px;
 }
@@ -260,9 +374,65 @@ body {
   background: transparent;
 }
 #chatMessages::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 9999px;
+  background: var(--md-sys-color-outline-variant);
+  border-radius: var(--md-shape-corner-full);
 }
 #chatMessages::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--md-sys-color-outline);
+}
+
+/* Horizontal chips scroll on touch */
+.chips-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.chips-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Mobile-First Responsiveness (@media queries)
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  /* Compact Top Bar */
+  .m3-top-app-bar {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  /* Arena layout stacks smoothly */
+  #arenaScreen {
+    padding-bottom: 0px !important;
+  }
+
+  /* Chat full height viewport optimization */
+  #chatMessages {
+    max-height: calc(100vh - 360px) !important;
+    min-height: 260px !important;
+  }
+
+  /* Full screen / Bottom Sheet Dialog for Debrief on mobile */
+  #debriefModal > div {
+    border-radius: 28px 28px 0 0 !important;
+    max-height: 94vh !important;
+    margin-bottom: 0 !important;
+    margin-top: auto !important;
+    width: 100% !important;
+  }
+
+  /* Settings Modal bottom sheet on mobile */
+  #settingsModal > div {
+    border-radius: 28px 28px 0 0 !important;
+    margin-bottom: 0 !important;
+    margin-top: auto !important;
+    width: 100% !important;
+  }
+
+  /* Touch buttons minimum touch target size */
+  .m3-btn-filled, .m3-btn-tonal, .m3-btn-outlined {
+    min-height: 48px !important;
+  }
 }
