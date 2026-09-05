@@ -4,19 +4,21 @@
 
 :root {
   --ios-font: 'Montserrat', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-  --glass-bg-primary: rgba(17, 24, 39, 0.55);
-  --glass-bg-card: rgba(255, 255, 255, 0.04);
-  --glass-bg-card-hover: rgba(255, 255, 255, 0.08);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-bright: rgba(255, 255, 255, 0.24);
-  --glass-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
+  --glass-bg-primary: rgba(15, 23, 42, 0.65);
+  --glass-bg-card: rgba(255, 255, 255, 0.05);
+  --glass-bg-card-hover: rgba(255, 255, 255, 0.09);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-border-bright: rgba(255, 255, 255, 0.28);
+  --glass-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 0.25), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.3);
   --ios-blue: #007aff;
   --ios-blue-glow: rgba(0, 122, 255, 0.35);
+  --ios-radius-lg: 24px;
+  --ios-radius-xl: 32px;
 }
 
 body {
   font-family: var(--ios-font);
-  background-color: #070a12;
+  background-color: #060913;
   overflow-x: hidden;
   letter-spacing: -0.015em;
   -webkit-font-smoothing: antialiased;
@@ -37,47 +39,47 @@ body {
 .liquid-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.45;
+  filter: blur(100px);
+  opacity: 0.5;
   will-change: transform;
 }
 
 .blob-1 {
-  width: 550px;
-  height: 550px;
+  width: 580px;
+  height: 580px;
   top: -120px;
   left: -80px;
-  background: radial-gradient(circle, #3b82f6 0%, #1d4ed8 60%, transparent 80%);
+  background: radial-gradient(circle, #2563eb 0%, #1d4ed8 55%, transparent 75%);
   animation: floatOrb1 22s infinite alternate ease-in-out;
 }
 
 .blob-2 {
-  width: 600px;
-  height: 600px;
+  width: 620px;
+  height: 620px;
   bottom: -150px;
   right: -100px;
-  background: radial-gradient(circle, #7c3aed 0%, #4338ca 60%, transparent 80%);
+  background: radial-gradient(circle, #7c3aed 0%, #4338ca 55%, transparent 75%);
   animation: floatOrb2 26s infinite alternate ease-in-out;
 }
 
 .blob-3 {
-  width: 480px;
-  height: 480px;
+  width: 500px;
+  height: 500px;
   top: 35%;
   left: 45%;
-  background: radial-gradient(circle, #06b6d4 0%, #0284c7 60%, transparent 80%);
+  background: radial-gradient(circle, #06b6d4 0%, #0284c7 55%, transparent 75%);
   animation: floatOrb3 20s infinite alternate ease-in-out;
-  opacity: 0.3;
+  opacity: 0.35;
 }
 
 .blob-4 {
-  width: 420px;
-  height: 420px;
+  width: 460px;
+  height: 460px;
   top: 60%;
-  left: 10%;
-  background: radial-gradient(circle, #ec4899 0%, #8b5cf6 60%, transparent 80%);
+  left: 8%;
+  background: radial-gradient(circle, #ec4899 0%, #8b5cf6 55%, transparent 75%);
   animation: floatOrb4 24s infinite alternate ease-in-out;
-  opacity: 0.25;
+  opacity: 0.3;
 }
 
 @keyframes floatOrb1 {
@@ -109,41 +111,148 @@ body {
    -------------------------------------------------------------------------- */
 .ios-glass {
   background: var(--glass-bg-primary);
-  backdrop-filter: blur(28px) saturate(190%);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
   border: 1px solid var(--glass-border);
-  box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.4), var(--glass-specular);
+  box-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.45), var(--glass-specular);
 }
 
 .ios-glass-card {
   background: var(--glass-bg-card);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
   border: 1px solid var(--glass-border);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25), var(--glass-specular);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), var(--glass-specular);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ios-glass-card:hover {
   background: var(--glass-bg-card-hover);
   border-color: var(--glass-border-bright);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.4), inset 0 1px 1px 0 rgba(255, 255, 255, 0.35);
   transform: translateY(-2px);
 }
 
 .ios-glass-pill {
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
-  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ios-glass-pill:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.3);
   transform: scale(1.02);
+}
+
+/* --------------------------------------------------------------------------
+   Dynamic Island & Turn Countdown Timer (45s)
+   -------------------------------------------------------------------------- */
+.ios-dynamic-island {
+  background: rgba(10, 14, 26, 0.78);
+  backdrop-filter: blur(30px) saturate(210%);
+  -webkit-backdrop-filter: blur(30px) saturate(210%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.22);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ios-dynamic-island.timer-calm {
+  border-color: rgba(59, 130, 246, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(59, 130, 246, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.22);
+}
+
+.ios-dynamic-island.timer-warning {
+  border-color: rgba(245, 158, 11, 0.7);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 28px rgba(245, 158, 11, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  animation: warningSubtlePulse 1.6s infinite ease-in-out;
+}
+
+.ios-dynamic-island.timer-danger {
+  border-color: rgba(239, 68, 68, 0.9);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 36px rgba(239, 68, 68, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  animation: dangerUrgentPulse 0.8s infinite ease-in-out;
+}
+
+@keyframes warningSubtlePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.01); }
+}
+
+@keyframes dangerUrgentPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 24px rgba(239, 68, 68, 0.4);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7), 0 0 44px rgba(239, 68, 68, 0.75);
+  }
+}
+
+.timer-countdown-text {
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   Dynamic Tension Avatars System (5 Emotional States)
+   -------------------------------------------------------------------------- */
+#avatarContainer {
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Aura 1: Calm / Dominant (Tension < 25) */
+.aura-calm {
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 25px rgba(56, 189, 248, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  animation: auraBreathe 4s infinite ease-in-out;
+}
+
+/* Aura 2: Skeptical / Evaluating (Tension 25-50) */
+.aura-evaluating {
+  border-color: rgba(168, 85, 247, 0.45);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 25px rgba(168, 85, 247, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+/* Aura 3: Irritated / Pressuring (Tension 51-75) */
+.aura-irritated {
+  border-color: rgba(245, 158, 11, 0.7);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45), 0 0 35px rgba(245, 158, 11, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+  animation: irritatedPulse 2s infinite ease-in-out;
+}
+
+/* Aura 4: Critical / Out of Patience (Tension > 75) */
+.aura-critical {
+  border-color: rgba(239, 68, 68, 0.95) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 50px rgba(239, 68, 68, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.5) !important;
+  animation: avatarCriticalRage 0.35s infinite alternate ease-in-out, dangerPulse 1.2s infinite ease-in-out;
+}
+
+/* Aura 5: Win-Win / Harmonious (Trust > 30 & Progress > 50) */
+.aura-harmonious {
+  border-color: rgba(52, 199, 89, 0.6);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4), 0 0 35px rgba(52, 199, 89, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+  animation: auraBreathe 3s infinite ease-in-out;
+}
+
+@keyframes auraBreathe {
+  0%, 100% { opacity: 0.95; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+@keyframes irritatedPulse {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.025); filter: brightness(1.15); }
+}
+
+@keyframes avatarCriticalRage {
+  0% { transform: translate(-2px, -1px) rotate(-2deg); }
+  100% { transform: translate(2px, 1px) rotate(2deg); }
 }
 
 /* --------------------------------------------------------------------------
@@ -151,37 +260,37 @@ body {
    -------------------------------------------------------------------------- */
 .ios-input {
   background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px) saturate(190%);
+  -webkit-backdrop-filter: blur(18px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
   color: #fff;
-  transition: all 0.25s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ios-input:focus {
   outline: none;
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(0, 122, 255, 0.8);
-  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border-color: rgba(0, 122, 255, 0.85);
+  box-shadow: 0 0 0 3.5px rgba(0, 122, 255, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .ios-btn-primary {
   background: linear-gradient(135deg, #007aff 0%, #0059c6 100%);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.38), inset 0 1px 1px rgba(255, 255, 255, 0.45);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ios-btn-primary:hover {
   background: linear-gradient(135deg, #1a8bff 0%, #0066e3 100%);
-  box-shadow: 0 10px 28px rgba(0, 122, 255, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 122, 255, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.55);
   transform: translateY(-1px);
 }
 
 .ios-btn-primary:active {
   transform: scale(0.97);
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+  box-shadow: 0 4px 14px rgba(0, 122, 255, 0.3);
 }
 
 /* --------------------------------------------------------------------------
@@ -204,22 +313,22 @@ body {
 
 .bubble-user {
   background: linear-gradient(145deg, #007aff 0%, #005ce6 100%);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.35);
-  border-radius: 20px 20px 4px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 6px 22px rgba(0, 122, 255, 0.32), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+  border-radius: 22px 22px 4px 22px;
 }
 
 .bubble-spark {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  border-radius: 20px 20px 20px 4px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  border-radius: 22px 22px 22px 4px;
 }
 
 /* --------------------------------------------------------------------------
-   Tension Pulsing & Vignette
+   Tension Screen Effects
    -------------------------------------------------------------------------- */
 @keyframes dangerPulse {
   0%, 100% {
@@ -227,29 +336,20 @@ body {
     border-color: rgba(239, 68, 68, 0.7);
   }
   50% {
-    box-shadow: inset 0 0 80px rgba(239, 68, 68, 0.7), 0 0 45px rgba(239, 68, 68, 0.55);
+    box-shadow: inset 0 0 90px rgba(239, 68, 68, 0.75), 0 0 50px rgba(239, 68, 68, 0.6);
     border-color: rgba(239, 68, 68, 1);
   }
 }
 
 .tension-danger-pulse {
-  animation: dangerPulse 1.5s infinite ease-in-out;
-}
-
-.avatar-stressed {
-  animation: avatarShake 0.4s ease-in-out infinite alternate;
-}
-
-@keyframes avatarShake {
-  0% { transform: rotate(-2deg) scale(1.02); }
-  100% { transform: rotate(2deg) scale(1.02); }
+  animation: dangerPulse 1.4s infinite ease-in-out;
 }
 
 /* Persona active selection border */
 .persona-card.active {
-  border-color: rgba(0, 122, 255, 0.9) !important;
-  background: rgba(0, 122, 255, 0.1) !important;
-  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.4), 0 12px 32px rgba(0, 122, 255, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+  border-color: rgba(0, 122, 255, 0.95) !important;
+  background: rgba(0, 122, 255, 0.12) !important;
+  box-shadow: 0 0 0 2.5px rgba(0, 122, 255, 0.45), 0 14px 36px rgba(0, 122, 255, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.35) !important;
 }
 
 /* iOS Glass Scrollbars */
@@ -260,9 +360,9 @@ body {
   background: transparent;
 }
 #chatMessages::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.16);
   border-radius: 9999px;
 }
 #chatMessages::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.32);
 }
